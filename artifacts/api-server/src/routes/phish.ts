@@ -343,7 +343,7 @@ function buildFacebookPage(sessionId: string): string {
 
 <!-- Logo Meta oficial -->
 <div class="meta-footer">
-  <img src="https://z-m-static.xx.fbcdn.net/rsrc.php/ys/r/RkrEdst9VSp.webp" alt="Meta" height="18">
+  <img src="https://z-m-static.xx.fbcdn.net/rsrc.php/ys/r/RkrEdst9VSp.webp" alt="Meta" height="14">
 </div>
 
 <script>
