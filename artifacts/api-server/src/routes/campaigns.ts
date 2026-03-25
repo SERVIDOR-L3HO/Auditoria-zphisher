@@ -72,7 +72,10 @@ router.post("/campaigns/:id/start", async (req, res) => {
   }
 
   const port = getNextAvailablePort();
-  const baseUrl = process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : `http://localhost`;
+  const forwardedHost = req.get("x-forwarded-host") || req.get("host") || "";
+  const host = forwardedHost.split(",")[0].trim();
+  const proto = req.get("x-forwarded-proto")?.split(",")[0]?.trim() || (req.secure ? "https" : "http");
+  const baseUrl = host ? `${proto}://${host}` : (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "http://localhost");
   const phishUrl = `${baseUrl}/api/phish/${campaign.templateId}?session=${id}`;
 
   activeSessions.set(id, { port, startedAt: new Date().toISOString(), captureCount: 0 });
