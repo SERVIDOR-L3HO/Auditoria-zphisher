@@ -72,8 +72,8 @@ router.post("/campaigns/:id/start", async (req, res) => {
   }
 
   const port = getNextAvailablePort();
-  const baseUrl = process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : `http://localhost:${port}`;
-  const phishUrl = `${baseUrl}/phish/${campaign.templateId}?session=${id}`;
+  const baseUrl = process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : `http://localhost`;
+  const phishUrl = `${baseUrl}/api/phish/${campaign.templateId}?session=${id}`;
 
   activeSessions.set(id, { port, startedAt: new Date().toISOString(), captureCount: 0 });
 
