@@ -1,0 +1,20 @@
+packages:
+  "framer-motion": "For sleek page transitions and interactive component animations fitting the cyber theme"
+  "recharts": "For dashboard statistics and analytics visualization"
+  "date-fns": "For formatting timestamps on captures and campaigns"
+  "lucide-react": "For professional icons across the dashboard"
+  "clsx": "Utility for constructing className strings conditionally"
+  "tailwind-merge": "Utility to efficiently merge Tailwind CSS classes"
+
+images:
+  - path: "artifacts/phish-audit/public/images/cyber-bg.png"
+    description: "Dark, abstract cybersecurity background with glowing cyan and neon green data nodes, wireframes, and subtle grid patterns. High-tech, professional hacker aesthetic."
+    aspect_ratio: "16:9"
+  - path: "artifacts/phish-audit/public/images/logo-shield.png"
+    description: "Minimalist glowing neon cyan security shield logo mark on a transparent background, sleek and modern."
+    aspect_ratio: "1:1"
+
+notes:
+  - Using generated API hooks from @workspace/api-client-react
+  - Defaulting to dark mode with a cyan/neon green tech aesthetic
+  - Wouter for routing, TanStack Query for data fetching

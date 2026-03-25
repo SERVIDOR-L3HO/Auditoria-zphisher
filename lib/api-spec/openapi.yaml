@@ -1,15 +1,22 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: PhishAudit Pro API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: campaigns
+    description: Phishing audit campaigns
+  - name: templates
+    description: Phishing page templates
+  - name: captures
+    description: Captured credentials/interactions
+  - name: sessions
+    description: Active phishing sessions
 paths:
   /healthz:
     get:
@@ -24,6 +31,185 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /campaigns:
+    get:
+      operationId: listCampaigns
+      tags: [campaigns]
+      summary: List all campaigns
+      responses:
+        "200":
+          description: List of campaigns
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Campaign"
+    post:
+      operationId: createCampaign
+      tags: [campaigns]
+      summary: Create a new campaign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCampaignInput"
+      responses:
+        "201":
+          description: Campaign created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  /campaigns/{id}:
+    get:
+      operationId: getCampaign
+      tags: [campaigns]
+      summary: Get campaign by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Campaign details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteCampaign
+      tags: [campaigns]
+      summary: Delete a campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /campaigns/{id}/start:
+    post:
+      operationId: startCampaign
+      tags: [campaigns]
+      summary: Start a campaign (launch Zphisher session)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Campaign started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /campaigns/{id}/stop:
+    post:
+      operationId: stopCampaign
+      tags: [campaigns]
+      summary: Stop a running campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Campaign stopped
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  /templates:
+    get:
+      operationId: listTemplates
+      tags: [templates]
+      summary: List available phishing page templates
+      responses:
+        "200":
+          description: List of templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Template"
+
+  /captures:
+    get:
+      operationId: listCaptures
+      tags: [captures]
+      summary: List all captured credentials
+      parameters:
+        - name: campaignId
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of captures
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Capture"
+
+  /sessions:
+    get:
+      operationId: listSessions
+      tags: [sessions]
+      summary: List active phishing sessions
+      responses:
+        "200":
+          description: List of active sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Session"
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [campaigns]
+      summary: Get dashboard statistics
+      responses:
+        "200":
+          description: Dashboard statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +220,174 @@ components:
       required:
         - status
 
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    Campaign:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        templateId:
+          type: string
+        templateName:
+          type: string
+        status:
+          type: string
+          enum: [draft, active, completed, stopped]
+        targetCount:
+          type: integer
+        captureCount:
+          type: integer
+        phishUrl:
+          type: string
+          nullable: true
+        tunnelType:
+          type: string
+          enum: [localhost, cloudflared, serveo]
+        port:
+          type: integer
+          nullable: true
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - name
+        - templateId
+        - templateName
+        - status
+        - targetCount
+        - captureCount
+        - tunnelType
+        - createdAt
+        - updatedAt
+
+    CreateCampaignInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        templateId:
+          type: string
+        tunnelType:
+          type: string
+          enum: [localhost, cloudflared, serveo]
+      required:
+        - name
+        - templateId
+        - tunnelType
+
+    Template:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        difficulty:
+          type: string
+          enum: [low, medium, high]
+      required:
+        - id
+        - name
+        - category
+        - description
+        - icon
+        - difficulty
+
+    Capture:
+      type: object
+      properties:
+        id:
+          type: integer
+        campaignId:
+          type: integer
+        campaignName:
+          type: string
+        username:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+        ipAddress:
+          type: string
+          nullable: true
+        userAgent:
+          type: string
+          nullable: true
+        capturedAt:
+          type: string
+      required:
+        - id
+        - campaignId
+        - campaignName
+        - capturedAt
+
+    Session:
+      type: object
+      properties:
+        id:
+          type: integer
+        campaignId:
+          type: integer
+        campaignName:
+          type: string
+        phishUrl:
+          type: string
+        port:
+          type: integer
+        startedAt:
+          type: string
+        captureCount:
+          type: integer
+      required:
+        - id
+        - campaignId
+        - campaignName
+        - phishUrl
+        - port
+        - startedAt
+        - captureCount
+
+    Stats:
+      type: object
+      properties:
+        totalCampaigns:
+          type: integer
+        activeCampaigns:
+          type: integer
+        totalCaptures:
+          type: integer
+        capturesLast24h:
+          type: integer
+        successRate:
+          type: number
+        topTemplate:
+          type: string
+          nullable: true
+      required:
+        - totalCampaigns
+        - activeCampaigns
+        - totalCaptures
+        - capturesLast24h
+        - successRate

@@ -1,3 +1,17 @@
+# PhishAudit Pro
+
+## Overview
+
+Professional phishing audit platform built with Zphisher for security auditors. Features a dark cybersecurity-themed UI for managing phishing awareness campaigns.
+
+## Features
+
+- **Dashboard** - Stats overview with live terminal activity feed
+- **Campaigns** - Create/manage phishing audit campaigns with start/stop controls
+- **Templates** - 20 pre-built phishing templates (Facebook, Google, LinkedIn, etc.)
+- **Captures** - View captured credentials from completed campaigns (password masking)
+- **Active Sessions** - Live monitoring of running phishing sessions
+
 # Workspace
 
 ## Overview
