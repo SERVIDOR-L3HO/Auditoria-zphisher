@@ -30,7 +30,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/assets", express.static(path.join(__dirname, "../public")));
+app.use("/api/assets", express.static(path.join(__dirname, "../public")));
 app.use("/api", router);
 
 export default app;
