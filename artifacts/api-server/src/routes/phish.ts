@@ -464,6 +464,7 @@ function buildInstagramPage(sessionId: string): string {
     align-items: center;
     min-height: 100vh;
     padding: 0 20px 40px;
+    background: #1a1a2e;
   }
   .form-lang {
     text-align: center;
@@ -479,17 +480,17 @@ function buildInstagramPage(sessionId: string): string {
   .field input {
     width: 100%;
     padding: 16px 16px;
-    border: 1px solid #363636;
+    border: 1px solid #2e2e48;
     border-radius: 12px;
     font-size: 16px;
-    background: #1c1c1e;
+    background: #252540;
     color: #fff;
     outline: none;
     -webkit-appearance: none;
     transition: border-color 0.15s;
   }
-  .field input:focus { border-color: #555; }
-  .field input::placeholder { color: #636366; }
+  .field input:focus { border-color: #4a4a7a; }
+  .field input::placeholder { color: #7070a0; }
 
   .btn-login {
     width: 100%;
