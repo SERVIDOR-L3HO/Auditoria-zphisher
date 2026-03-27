@@ -27,19 +27,19 @@ body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;mi
 
 /* ── HEADER ── */
 .hdr{background:#6B1535;width:100%}
-.hdr-top{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;max-width:960px;margin:0 auto}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;max-width:960px;margin:0 auto}
 .hdr-logo{display:flex;align-items:center;text-decoration:none}
 .hdr-logo-img{height:56px;width:auto;display:block}
 .hdr-menu{background:none;border:none;cursor:pointer;color:#fff;padding:6px;display:flex;flex-direction:column;gap:5px;flex-shrink:0}
 .hdr-menu span{display:block;width:22px;height:2px;background:#fff;border-radius:1px}
 
 /* ── RENAPO BAR ── */
-.renapo-bar{background:#5c1230;padding:12px 16px}
+.renapo-bar{background:#5c1230;padding:16px 20px}
 .renapo-bar-inner{max-width:960px;margin:0 auto}
 .renapo-bar p{color:#fff;font-size:17px;font-weight:700;letter-spacing:0.3px}
 
 /* ── BREADCRUMB ── */
-.breadcrumb{padding:18px 16px;max-width:960px;margin:0 auto;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.breadcrumb{padding:26px 20px;max-width:960px;margin:0 auto;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .breadcrumb a,.breadcrumb span{font-size:15px;color:#333;text-decoration:none}
 .breadcrumb a:hover{text-decoration:underline}
 .breadcrumb .sep{color:#666;font-size:13px;margin:0 2px}
@@ -47,14 +47,14 @@ body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;mi
 .home-icon{font-size:16px}
 
 /* ── PAGE TITLE ── */
-.page-wrap{max-width:960px;margin:0 auto;padding:0 16px;width:100%}
-.page-title{font-size:46px;font-weight:900;color:#333;margin:20px 0 30px;line-height:1.1}
+.page-wrap{max-width:960px;margin:0 auto;padding:0 20px;width:100%}
+.page-title{font-size:46px;font-weight:900;color:#333;margin:8px 0 40px;line-height:1.1}
 
 /* ── SECTION HEADER ── */
-.section-hdr{margin-bottom:8px}
-.section-hdr h2{font-size:28px;font-weight:900;color:#333;margin-bottom:8px}
-.section-underline{width:44px;height:4px;background:#c4a200;border-radius:2px;margin-bottom:20px}
-.section-desc{font-size:16px;color:#444;line-height:1.6;margin-bottom:26px}
+.section-hdr{margin-bottom:10px}
+.section-hdr h2{font-size:28px;font-weight:900;color:#333;margin-bottom:10px}
+.section-underline{width:44px;height:4px;background:#c4a200;border-radius:2px;margin-bottom:28px}
+.section-desc{font-size:16px;color:#444;line-height:1.6;margin-bottom:32px}
 
 /* ── TABS ── */
 .tabs{display:flex;gap:0;margin-bottom:0}
