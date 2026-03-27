@@ -11,6 +11,7 @@ import CampaignDetail from "@/pages/campaigns/detail";
 import TemplatesList from "@/pages/templates/list";
 import CapturesList from "@/pages/captures/list";
 import SessionsList from "@/pages/sessions/list";
+import LocationsList from "@/pages/locations/list";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ function Router() {
       <Route path="/templates" component={TemplatesList} />
       <Route path="/captures" component={CapturesList} />
       <Route path="/sessions" component={SessionsList} />
+      <Route path="/ubicacion" component={LocationsList} />
       <Route component={NotFound} />
     </Switch>
   );

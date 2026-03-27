@@ -8,7 +8,8 @@ import {
   Terminal,
   ShieldAlert,
   Menu,
-  X
+  X,
+  Navigation
 } from "lucide-react";
 import { useState } from "react";
 
@@ -18,6 +19,7 @@ const navItems = [
   { href: "/templates", label: "Plantillas", icon: FileCode },
   { href: "/captures", label: "Credenciales", icon: ListTodo },
   { href: "/sessions", label: "Sesiones Activas", icon: Terminal },
+  { href: "/ubicacion", label: "Rastreo GPS", icon: Navigation },
 ];
 
 export function Sidebar() {

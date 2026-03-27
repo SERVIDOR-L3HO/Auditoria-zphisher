@@ -6,6 +6,7 @@ import capturesRouter from "./captures.js";
 import sessionsRouter from "./sessions.js";
 import statsRouter from "./stats.js";
 import phishRouter from "./phish.js";
+import locationsRouter from "./locations.js";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use(capturesRouter);
 router.use(sessionsRouter);
 router.use(statsRouter);
 router.use(phishRouter);
+router.use(locationsRouter);
 
 export default router;
