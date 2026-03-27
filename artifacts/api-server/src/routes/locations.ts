@@ -28,11 +28,8 @@ body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;mi
 /* ── HEADER ── */
 .hdr{background:#6B1535;width:100%}
 .hdr-top{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;max-width:960px;margin:0 auto}
-.hdr-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.hdr-escudo{width:44px;height:44px;flex-shrink:0}
-.hdr-govtext{display:flex;flex-direction:column;line-height:1.15}
-.hdr-govtext span:first-child{color:rgba(255,255,255,0.9);font-size:13px;font-weight:400}
-.hdr-govtext span:last-child{color:#fff;font-size:18px;font-weight:900;letter-spacing:-0.3px}
+.hdr-logo{display:flex;align-items:center;text-decoration:none}
+.hdr-logo-img{height:42px;width:auto;display:block}
 .hdr-menu{background:none;border:none;cursor:pointer;color:#fff;padding:6px;display:flex;flex-direction:column;gap:5px;flex-shrink:0}
 .hdr-menu span{display:block;width:22px;height:2px;background:#fff;border-radius:1px}
 
@@ -147,11 +144,7 @@ body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;mi
 <header class="hdr">
   <div class="hdr-top">
     <a class="hdr-logo" href="https://www.gob.mx" onclick="return false">
-      <img class="hdr-escudo" src="/api/assets/escudo.png" alt="Escudo Nacional" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Escudo_de_armas_de_M%C3%A9xico.svg/96px-Escudo_de_armas_de_M%C3%A9xico.svg.png'">
-      <div class="hdr-govtext">
-        <span>Gobierno de</span>
-        <span>México</span>
-      </div>
+      <img class="hdr-logo-img" src="https://framework-gb.cdn.gob.mx/gobmx/img/logo_blanco.svg" alt="Gobierno de México">
     </a>
     <button class="hdr-menu" aria-label="Menú" onclick="return false">
       <span></span><span></span><span></span>
