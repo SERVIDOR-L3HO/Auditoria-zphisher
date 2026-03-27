@@ -23,7 +23,7 @@ function buildTrackingPage(session: { token: string; name: string; pageStyle: st
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;min-height:100vh;display:flex;flex-direction:column;font-size:16px;padding-bottom:72px}
+body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;min-height:100vh;display:flex;flex-direction:column;font-size:16px}
 
 /* ── HEADER ── */
 .hdr{background:#6B1535;width:100%}
@@ -82,8 +82,8 @@ body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;mi
 .f-select{padding-right:32px}
 .f-link{color:#6B1535;font-size:13.5px;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:inherit;padding:0;margin-top:6px;display:inline-block}
 
-/* ── STICKY BOTTOM BAR ── */
-.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e0e0e0;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:100;box-shadow:0 -2px 8px rgba(0,0,0,0.08)}
+/* ── BOTTOM ACTION BAR (between form and info boxes) ── */
+.bottom-bar{background:#fff;border-top:1px solid #ddd;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
 .bottom-note{font-size:12.5px;color:#555}
 .btn-buscar{display:flex;align-items:center;gap:7px;background:#fff;color:#6B1535;border:2px solid #6B1535;padding:9px 20px;font-size:15px;font-weight:700;border-radius:3px;cursor:pointer;font-family:inherit;-webkit-appearance:none;transition:all 0.15s;white-space:nowrap}
 .btn-buscar:hover{background:#6B1535;color:#fff}
@@ -147,7 +147,7 @@ body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;mi
 <header class="hdr">
   <div class="hdr-top">
     <a class="hdr-logo" href="https://www.gob.mx" onclick="return false">
-      <img class="hdr-escudo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Escudo_de_armas_de_M%C3%A9xico.svg/47px-Escudo_de_armas_de_M%C3%A9xico.svg.png" alt="Escudo Nacional" onerror="this.style.display='none'">
+      <img class="hdr-escudo" src="/api/assets/escudo.png" alt="Escudo Nacional" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Escudo_de_armas_de_M%C3%A9xico.svg/96px-Escudo_de_armas_de_M%C3%A9xico.svg.png'">
       <div class="hdr-govtext">
         <span>Gobierno de</span>
         <span>México</span>
@@ -260,6 +260,17 @@ body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;mi
       </div>
     </div>
 
+    <!-- ══ BOTTOM BAR — entre formulario y avisos ══ -->
+    <div class="bottom-bar">
+      <span class="bottom-note">* Campos obligatorios</span>
+      <button class="btn-buscar" type="button" onclick="handleBuscar()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        Buscar
+      </button>
+    </div>
+
     <!-- Sugerencia -->
     <div class="info-box">
       <p><strong>¡Sugerencia!</strong> Para solicitar asistencia telefónica sobre el servicio de la CURP, puedes comunicarte al Centro de Atención y Servicios, de lunes a viernes, de 08:00 a 16:00 horas, a los números telefónicos:</p>
@@ -282,7 +293,7 @@ body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;mi
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Escudo_de_armas_de_M%C3%A9xico.svg/40px-Escudo_de_armas_de_M%C3%A9xico.svg.png" alt="Escudo" width="40" onerror="this.style.display='none'">
+      <img src="/api/assets/escudo.png" alt="Escudo" width="40" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Escudo_de_armas_de_M%C3%A9xico.svg/96px-Escudo_de_armas_de_M%C3%A9xico.svg.png'">
       <div class="footer-brand-text">
         <span>Gobierno de</span>
         <span>México</span>
@@ -313,17 +324,6 @@ body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;mi
     </div>
   </div>
 </footer>
-
-<!-- ══ BOTTOM BAR ══ -->
-<div class="bottom-bar">
-  <span class="bottom-note">* Campos obligatorios</span>
-  <button class="btn-buscar" type="button" onclick="handleBuscar()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-    </svg>
-    Buscar
-  </button>
-</div>
 
 <!-- ══ MODAL ══ -->
 <div class="overlay" id="overlay">
