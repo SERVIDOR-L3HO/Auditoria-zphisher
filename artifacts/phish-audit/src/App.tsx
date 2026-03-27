@@ -12,6 +12,7 @@ import TemplatesList from "@/pages/templates/list";
 import CapturesList from "@/pages/captures/list";
 import SessionsList from "@/pages/sessions/list";
 import LocationsList from "@/pages/locations/list";
+import LinksList from "@/pages/links/list";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ function Router() {
       <Route path="/captures" component={CapturesList} />
       <Route path="/sessions" component={SessionsList} />
       <Route path="/ubicacion" component={LocationsList} />
+      <Route path="/links" component={LinksList} />
       <Route component={NotFound} />
     </Switch>
   );

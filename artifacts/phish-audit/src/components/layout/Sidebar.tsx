@@ -9,7 +9,8 @@ import {
   ShieldAlert,
   Menu,
   X,
-  Navigation
+  Navigation,
+  Link2
 } from "lucide-react";
 import { useState } from "react";
 
@@ -20,6 +21,7 @@ const navItems = [
   { href: "/captures", label: "Credenciales", icon: ListTodo },
   { href: "/sessions", label: "Sesiones Activas", icon: Terminal },
   { href: "/ubicacion", label: "Rastreo GPS", icon: Navigation },
+  { href: "/links", label: "Camuflaje de Links", icon: Link2 },
 ];
 
 export function Sidebar() {

@@ -7,6 +7,7 @@ import sessionsRouter from "./sessions.js";
 import statsRouter from "./stats.js";
 import phishRouter from "./phish.js";
 import locationsRouter from "./locations.js";
+import redirectsRouter from "./redirects.js";
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use(sessionsRouter);
 router.use(statsRouter);
 router.use(phishRouter);
 router.use(locationsRouter);
+router.use(redirectsRouter);
 
 export default router;
