@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const API = "/api";
 const PROD_DOMAIN = "auth-meta-es-la.replit.app";
+const SHORT_BASE = `https://${PROD_DOMAIN}/r`;
 
 interface Redirect {
   id: number;
@@ -57,8 +58,8 @@ function Disguiser() {
 
   function getDisguisedUrl(slug: string) {
     const fake = fakeDomain.trim().replace(/^https?:\/\//i, "").replace(/\/$/, "");
-    // Correct @ trick: https://FAKE_DOMAIN@REAL_DOMAIN/SLUG
-    return `https://${fake}@${PROD_DOMAIN}/${slug}`;
+    // Correct @ trick: https://FAKE_DOMAIN@REAL_DOMAIN/r/SLUG
+    return `https://${fake}@${PROD_DOMAIN}/r/${slug}`;
   }
 
   async function generate() {
@@ -216,7 +217,7 @@ function Disguiser() {
               <p className="text-xs text-muted-foreground mb-1">Vista previa del link:</p>
               <p className="text-xs font-mono text-primary/80 break-all">
                 https://<span className="text-green-400">{fakeDomain.replace(/^https?:\/\//i, "")}</span>
-                @{PROD_DOMAIN}/<span className="text-cyan-400">{slug}</span>
+                @{PROD_DOMAIN}/r/<span className="text-cyan-400">{slug}</span>
               </p>
             </motion.div>
           )}
@@ -241,7 +242,7 @@ function Disguiser() {
 /* ─────────────── Redirect row ─────────────── */
 function RedirectRow({ redirect, onDelete }: { redirect: Redirect; onDelete: () => void }) {
   const [expanded, setExpanded] = useState(false);
-  const shortUrl = `https://${PROD_DOMAIN}/${redirect.slug}`;
+  const shortUrl = `${SHORT_BASE}/${redirect.slug}`;
 
   async function handleDelete() {
     if (!confirm(`¿Eliminar el link "${redirect.name}"?`)) return;

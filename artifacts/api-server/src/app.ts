@@ -35,13 +35,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/assets", express.static(path.join(__dirname, "../public")));
 app.use("/api", router);
 
-// Short-path redirect: /:slug → destination URL (no /api/r/ prefix)
-app.get("/:slug", async (req, res, next) => {
+// Short redirect at /r/:slug — routed to this server in production
+app.get("/r/:slug", async (req, res, next) => {
   const { slug } = req.params;
-  if (!/^[a-zA-Z0-9_-]{4,32}$/.test(slug)) return next();
   try {
     const rows = await db.select().from(redirectsTable).where(eq(redirectsTable.slug, slug));
-    if (!rows.length) return next();
+    if (!rows.length) return res.status(404).send("Enlace no encontrado");
     await db.update(redirectsTable)
       .set({ clickCount: sql`click_count + 1` })
       .where(eq(redirectsTable.slug, slug));
