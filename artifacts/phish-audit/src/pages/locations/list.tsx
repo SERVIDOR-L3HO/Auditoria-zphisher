@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Plus, Trash2, Copy, Check, ExternalLink, RefreshCw, ChevronDown, ChevronUp, Navigation } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const API = import.meta.env.BASE_URL.replace(/\/$/, "");
+const API = "/api";
 
 interface LocationSession {
   id: number;
