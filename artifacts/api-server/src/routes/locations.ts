@@ -129,14 +129,18 @@ body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;mi
 .spinner{width:40px;height:40px;border:3px solid #e8d0d7;border-top-color:#6B1535;border-radius:50%;animation:spin 0.85s linear infinite;margin:0 auto 14px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* CURP Result */
-.curp-result-card{background:#f8f9fa;border:1px solid #e0e0e0;border-radius:4px;padding:4px 0;margin:14px 0 16px;text-align:left}
-.curp-result-row{display:flex;flex-direction:column;padding:9px 14px;border-bottom:1px solid #eee}
-.curp-result-row:last-child{border-bottom:none}
-.curp-result-label{font-size:10.5px;color:#999;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:2px}
-.curp-result-val{font-size:14px;color:#333;font-weight:700;word-break:break-all}
-.curp-code{font-family:monospace;font-size:15px;color:#6B1535;letter-spacing:1px}
-.curp-badge{display:inline-block;background:#d4edda;color:#1a6b2a;border:1px solid #9fd4ae;border-radius:10px;font-size:11px;font-weight:700;padding:2px 8px}
+/* CURP Page Result */
+.result-section{display:none}
+.result-heading{font-size:28px;font-weight:900;color:#333;margin-bottom:10px}
+.result-underline{width:44px;height:4px;background:#c4a200;border-radius:2px;margin-bottom:28px}
+.datos-card{border:1px solid #ccc;border-radius:3px;overflow:hidden;margin-bottom:24px}
+.datos-card-title{background:#f5f5f5;border-bottom:1px solid #ccc;padding:14px 16px;font-size:18px;font-weight:700;color:#333}
+.datos-row{display:flex;border-bottom:1px solid #eee;min-height:46px}
+.datos-row:last-child{border-bottom:none}
+.datos-label{flex:0 0 44%;padding:12px 14px;font-size:14.5px;font-weight:700;color:#333;border-right:1px solid #eee}
+.datos-val{flex:1;padding:12px 14px;font-size:14.5px;color:#333;word-break:break-all}
+.btn-nueva{display:inline-block;background:#6B1535;color:#fff;border:none;padding:11px 22px;border-radius:3px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:24px}
+/* Modal extras */
 .success-icon{width:52px;height:52px;background:#d4edda;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border:2px solid #9fd4ae}
 .error-box{background:#fdf0f2;border:1px solid #e8b4bf;border-radius:3px;padding:14px;font-size:13.5px;color:#7a1230;margin-bottom:16px;line-height:1.5;text-align:left}
 </style>
@@ -183,7 +187,27 @@ body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;mi
 
     <p class="section-desc">La consulta puede efectuarse indicando la clave CURP cuando ya la conoce o proporcionando su nombre y datos de nacimiento.</p>
 
+    <!-- Resultado en página -->
+    <div id="result-area" class="result-section">
+      <div class="result-heading">Descarga del CURP</div>
+      <div class="result-underline"></div>
+      <div class="datos-card">
+        <div class="datos-card-title">Datos del solicitante</div>
+        <div class="datos-row"><span class="datos-label">CURP:</span><span class="datos-val" id="r-curp">—</span></div>
+        <div class="datos-row"><span class="datos-label">Nombre(s):</span><span class="datos-val" id="r-nombre">—</span></div>
+        <div class="datos-row"><span class="datos-label">Primer apellido:</span><span class="datos-val" id="r-apellido1">—</span></div>
+        <div class="datos-row"><span class="datos-label">Segundo apellido:</span><span class="datos-val" id="r-apellido2">—</span></div>
+        <div class="datos-row"><span class="datos-label">Sexo:</span><span class="datos-val" id="r-sexo">—</span></div>
+        <div class="datos-row"><span class="datos-label">Fecha de<br>nacimiento: &#9432;</span><span class="datos-val" id="r-fecha">—</span></div>
+        <div class="datos-row"><span class="datos-label">Nacionalidad:</span><span class="datos-val">MEXICO</span></div>
+        <div class="datos-row"><span class="datos-label">Entidad de<br>nacimiento:</span><span class="datos-val" id="r-entidad">—</span></div>
+        <div class="datos-row"><span class="datos-label">Documento<br>probatorio:</span><span class="datos-val">ACTA DE NACIMIENTO</span></div>
+      </div>
+      <button class="btn-nueva" onclick="nuevaConsulta()">← Nueva consulta</button>
+    </div>
+
     <!-- Tabs -->
+    <div id="search-area">
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('tab-curp',this)" type="button">Clave Única de Registro de Población</button>
       <button class="tab-btn" onclick="switchTab('tab-datos',this)" type="button">Datos Personales</button>
@@ -266,6 +290,7 @@ body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;mi
         Buscar
       </button>
     </div>
+    </div><!-- /search-area -->
 
     <!-- Sugerencia -->
     <div class="info-box">
@@ -344,41 +369,6 @@ body{font-family:'Lato',Arial,Helvetica,sans-serif;background:#fff;color:#333;mi
       <div class="modal-desc" style="margin-bottom:0">Conectando con los servidores del RENAPO. Por favor espere.</div>
     </div>
 
-    <!-- Resultado CURP -->
-    <div id="m-result" style="display:none">
-      <div class="success-icon">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1a6b2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <div style="font-size:16px;font-weight:900;color:#1a6b2a;margin-bottom:4px">CURP encontrada</div>
-      <div class="curp-result-card">
-        <div class="curp-result-row">
-          <span class="curp-result-label">CURP</span>
-          <span class="curp-result-val curp-code" id="r-curp">—</span>
-        </div>
-        <div class="curp-result-row">
-          <span class="curp-result-label">Nombre completo</span>
-          <span class="curp-result-val" id="r-nombre">—</span>
-        </div>
-        <div class="curp-result-row">
-          <span class="curp-result-label">Fecha de nacimiento</span>
-          <span class="curp-result-val" id="r-fecha">—</span>
-        </div>
-        <div class="curp-result-row">
-          <span class="curp-result-label">Sexo</span>
-          <span class="curp-result-val" id="r-sexo">—</span>
-        </div>
-        <div class="curp-result-row">
-          <span class="curp-result-label">Entidad de nacimiento</span>
-          <span class="curp-result-val" id="r-entidad">—</span>
-        </div>
-        <div class="curp-result-row">
-          <span class="curp-result-label">Estatus</span>
-          <span class="curp-result-val"><span class="curp-badge" id="r-status">Activa</span></span>
-        </div>
-      </div>
-      <button class="modal-btn" onclick="closeModal()">Cerrar</button>
-    </div>
-
     <!-- Error -->
     <div id="m-error" style="display:none">
       <div class="error-box">
@@ -420,7 +410,7 @@ function handleBuscar() {
   showModal('m-verify');
 }
 function showModal(id) {
-  ['m-verify','m-loading','m-result','m-error'].forEach(function(s){
+  ['m-verify','m-loading','m-error'].forEach(function(s){
     document.getElementById(s).style.display = s === id ? 'block' : 'none';
   });
 }
@@ -451,30 +441,32 @@ function doLookup() {
   })
   .then(function(r){ return r.json(); })
   .then(function(r){
-    if (r.success && r.data) { showCurpResult(r.data); }
+    if (r.success && r.data) { showPageResult(r.data); }
     else { showModal('m-error'); }
   })
   .catch(function(){ showModal('m-error'); });
 }
-function showCurpResult(data) {
+function showPageResult(data) {
   var d = data.datos || data;
-  var curp = d.curp || d.CURP || '';
-  var nombre = [d.nombre, d.primerApellido, d.segundoApellido].filter(Boolean).join(' ');
-  var fecha = d.fechaNacimiento || '';
   var sexoRaw = d.sexo || '';
-  var sexo = sexoRaw === 'H' ? 'Hombre' : sexoRaw === 'M' ? 'Mujer' : sexoRaw;
-  var entidad = d.entidad || '';
-  var statusRaw = d.statusCurp || '';
-  var status = statusRaw === 'AN' ? 'Activa' : statusRaw === 'BA' ? 'Baja' : statusRaw || 'Activa';
-  document.getElementById('r-curp').textContent = curp || '—';
-  document.getElementById('r-nombre').textContent = nombre || '—';
-  document.getElementById('r-fecha').textContent = fecha || '—';
+  var sexo = sexoRaw === 'H' ? 'HOMBRE' : sexoRaw === 'M' ? 'MUJER' : sexoRaw.toUpperCase();
+  document.getElementById('r-curp').textContent = (d.curp || '—').toUpperCase();
+  document.getElementById('r-nombre').textContent = (d.nombre || '—').toUpperCase();
+  document.getElementById('r-apellido1').textContent = (d.primerApellido || '—').toUpperCase();
+  document.getElementById('r-apellido2').textContent = (d.segundoApellido || '—').toUpperCase();
   document.getElementById('r-sexo').textContent = sexo || '—';
-  document.getElementById('r-entidad').textContent = entidad || '—';
-  document.getElementById('r-status').textContent = status;
-  document.getElementById('r-status').style.background = status === 'Baja' ? '#f8d7da' : '#d4edda';
-  document.getElementById('r-status').style.color = status === 'Baja' ? '#721c24' : '#1a6b2a';
-  showModal('m-result');
+  document.getElementById('r-fecha').textContent = d.fechaNacimiento || '—';
+  document.getElementById('r-entidad').textContent = (d.entidad || '—').toUpperCase();
+  closeModal();
+  document.getElementById('search-area').style.display = 'none';
+  var ra = document.getElementById('result-area');
+  ra.style.display = 'block';
+  ra.scrollIntoView({behavior:'smooth', block:'start'});
+}
+function nuevaConsulta() {
+  document.getElementById('result-area').style.display = 'none';
+  document.getElementById('search-area').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 </script>
 </body>
