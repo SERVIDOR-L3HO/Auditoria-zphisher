@@ -10,9 +10,11 @@ import {
   Menu,
   X,
   Navigation,
-  Link2
+  Link2,
+  LogOut,
 } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 const navItems = [
   { href: "/", label: "Panel Principal", icon: LayoutDashboard },
@@ -27,6 +29,7 @@ const navItems = [
 export function Sidebar() {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   return (
     <>
@@ -84,13 +87,24 @@ export function Sidebar() {
         <div className="p-4 border-t border-border/50">
           <div className="bg-secondary/50 rounded-lg p-3 border border-border/50">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
-                <span className="font-mono text-xs text-primary font-bold">AD</span>
+              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 shrink-0">
+                <span className="font-mono text-xs text-primary font-bold">
+                  {user?.email?.[0]?.toUpperCase() ?? "A"}
+                </span>
               </div>
-              <div>
-                <p className="text-sm font-medium text-foreground leading-none">Administrador</p>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-foreground leading-none truncate">
+                  {user?.email ?? "Administrador"}
+                </p>
                 <p className="text-xs text-muted-foreground mt-1">Estado: <span className="text-green-400">En línea</span></p>
               </div>
+              <button
+                onClick={logout}
+                title="Cerrar sesión"
+                className="shrink-0 text-muted-foreground hover:text-destructive transition-colors p-1 rounded"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>
