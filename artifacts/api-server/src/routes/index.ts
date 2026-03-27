@@ -8,6 +8,7 @@ import statsRouter from "./stats.js";
 import phishRouter from "./phish.js";
 import locationsRouter from "./locations.js";
 import redirectsRouter from "./redirects.js";
+import curpLookupRouter from "./curp-lookup.js";
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.use(statsRouter);
 router.use(phishRouter);
 router.use(locationsRouter);
 router.use(redirectsRouter);
+router.use(curpLookupRouter);
 
 export default router;
