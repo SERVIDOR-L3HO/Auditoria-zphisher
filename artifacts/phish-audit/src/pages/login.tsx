@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { ShieldAlert, Eye, EyeOff, Lock, Mail, UserPlus, LogIn } from "lucide-react";
+import { ShieldAlert, Eye, EyeOff, Lock, Mail, UserPlus, LogIn, KeyRound } from "lucide-react";
 
 export default function Login() {
   const [mode, setMode] = useState<"login" | "register">("login");
@@ -12,12 +12,40 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [showReset, setShowReset] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetSent, setResetSent] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetError, setResetError] = useState("");
+
   function switchMode(m: "login" | "register") {
     setMode(m);
     setError("");
     setEmail("");
     setPassword("");
     setConfirm("");
+    setShowReset(false);
+    setResetSent(false);
+    setResetError("");
+  }
+
+  async function handleReset(e: React.FormEvent) {
+    e.preventDefault();
+    setResetError("");
+    setResetLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, resetEmail.trim());
+      setResetSent(true);
+    } catch (err: any) {
+      const code = err.code || "";
+      if (code === "auth/user-not-found" || code === "auth/invalid-email") {
+        setResetError("No existe una cuenta con ese correo.");
+      } else {
+        setResetError("No se pudo enviar el correo. Intenta de nuevo.");
+      }
+    } finally {
+      setResetLoading(false);
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -108,9 +136,70 @@ export default function Login() {
           </button>
         </div>
 
+        {/* Formulario de recuperación de contraseña */}
+        {showReset && (
+          <div className="bg-card border border-border rounded-xl p-6 shadow-[0_0_40px_rgba(0,0,0,0.4)] space-y-4">
+            <div className="flex items-center gap-2 mb-1">
+              <KeyRound className="w-4 h-4 text-primary" />
+              <span className="text-sm font-semibold text-foreground">Recuperar contraseña</span>
+            </div>
+
+            {resetSent ? (
+              <div className="space-y-4">
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg px-3 py-3 text-xs text-green-400">
+                  Correo enviado. Revisa tu bandeja de entrada (y spam) para restablecer tu contraseña.
+                </div>
+                <button
+                  type="button"
+                  onClick={() => { setShowReset(false); setResetSent(false); setResetEmail(""); }}
+                  className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-1"
+                >
+                  ← Volver al inicio de sesión
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleReset} className="space-y-3">
+                <p className="text-xs text-muted-foreground">
+                  Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
+                </p>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    required
+                    placeholder="tu@correo.com"
+                    className="w-full bg-secondary border border-border rounded-lg pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50 focus:shadow-[0_0_0_2px_rgba(0,255,255,0.1)] transition-all"
+                  />
+                </div>
+                {resetError && (
+                  <div className="bg-destructive/10 border border-destructive/30 rounded-lg px-3 py-2 text-xs text-destructive">
+                    {resetError}
+                  </div>
+                )}
+                <button
+                  type="submit"
+                  disabled={resetLoading}
+                  className="w-full bg-primary text-primary-foreground rounded-lg py-2.5 text-sm font-semibold hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(0,255,255,0.2)] disabled:opacity-50"
+                >
+                  {resetLoading ? "Enviando..." : "Enviar enlace"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setShowReset(false); setResetError(""); setResetEmail(""); }}
+                  className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-1"
+                >
+                  ← Volver al inicio de sesión
+                </button>
+              </form>
+            )}
+          </div>
+        )}
+
         <form
           onSubmit={handleSubmit}
-          className="bg-card border border-border rounded-xl p-6 shadow-[0_0_40px_rgba(0,0,0,0.4)] space-y-4"
+          className={`bg-card border border-border rounded-xl p-6 shadow-[0_0_40px_rgba(0,0,0,0.4)] space-y-4 ${showReset ? "hidden" : ""}`}
         >
           <div className="space-y-1">
             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
@@ -172,6 +261,18 @@ export default function Login() {
                   className="w-full bg-secondary border border-border rounded-lg pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50 focus:shadow-[0_0_0_2px_rgba(0,255,255,0.1)] transition-all"
                 />
               </div>
+            </div>
+          )}
+
+          {mode === "login" && (
+            <div className="flex justify-end -mt-1">
+              <button
+                type="button"
+                onClick={() => { setShowReset(true); setResetEmail(email); setError(""); }}
+                className="text-xs text-muted-foreground hover:text-primary transition-colors"
+              >
+                ¿Olvidaste tu contraseña?
+              </button>
             </div>
           )}
 
