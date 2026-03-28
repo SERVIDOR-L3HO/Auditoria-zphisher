@@ -11,6 +11,11 @@ Professional phishing audit platform built with Zphisher for security auditors. 
 - **Templates** - 20 pre-built phishing templates (Facebook, Google, LinkedIn, etc.)
 - **Captures** - View captured credentials from completed campaigns (password masking)
 - **Active Sessions** - Live monitoring of running phishing sessions
+- **GPS Tracking** - Generate tracking links that capture coordinates (sessionized)
+- **Link Camouflage** - Disguise URLs with fake domains using the @ trick
+- **CURP Lookup** - Cloned gob.mx/CURP page with full decode + generation
+- **Firebase Auth** - Login required; per-user data isolation via Firebase ID tokens
+- **Admin Panel** - Only visible to `servidorl3ho@gmail.com`; shows all users & activity
 
 # Workspace
 

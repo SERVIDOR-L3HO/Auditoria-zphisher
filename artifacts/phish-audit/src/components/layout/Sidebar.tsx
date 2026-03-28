@@ -12,6 +12,7 @@ import {
   Navigation,
   Link2,
   LogOut,
+  Shield,
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
@@ -26,10 +27,13 @@ const navItems = [
   { href: "/links", label: "Camuflaje de Links", icon: Link2 },
 ];
 
+const ADMIN_EMAIL = "servidorl3ho@gmail.com";
+
 export function Sidebar() {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
+  const isAdmin = user?.email === ADMIN_EMAIL;
 
   return (
     <>
@@ -82,6 +86,33 @@ export function Sidebar() {
               </Link>
             );
           })}
+
+          {isAdmin && (
+            <>
+              <div className="pt-2 pb-1">
+                <div className="border-t border-border/50" />
+              </div>
+              <Link
+                href="/admin"
+                onClick={() => setIsOpen(false)}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group",
+                  location === "/admin"
+                    ? "bg-primary/10 text-primary border border-primary/20 shadow-[inset_0_0_10px_rgba(0,255,255,0.05)]"
+                    : "text-muted-foreground hover:bg-secondary hover:text-foreground hover:border-border border border-transparent"
+                )}
+              >
+                <Shield className={cn(
+                  "w-4 h-4 transition-transform duration-200",
+                  location === "/admin" ? "scale-110" : "group-hover:scale-110"
+                )} />
+                Panel Admin
+                {location === "/admin" && (
+                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(0,255,255,0.8)]" />
+                )}
+              </Link>
+            </>
+          )}
         </nav>
 
         <div className="p-4 border-t border-border/50">

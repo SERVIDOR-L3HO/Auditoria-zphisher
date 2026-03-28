@@ -14,6 +14,8 @@ export const campaignsTable = pgTable("campaigns", {
   phishUrl: text("phish_url"),
   tunnelType: text("tunnel_type").notNull().default("localhost"),
   port: integer("port"),
+  ownerUid: text("owner_uid"),
+  ownerEmail: text("owner_email"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

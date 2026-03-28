@@ -3,8 +3,14 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Plus, Trash2, Copy, Check, ExternalLink, RefreshCw, ChevronDown, ChevronUp, Navigation } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { auth } from "@/lib/firebase";
 
 const API = "/api";
+
+async function authHeaders(): Promise<Record<string, string>> {
+  const token = await auth.currentUser?.getIdToken();
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 interface LocationSession {
   id: number;
@@ -56,7 +62,8 @@ function SessionRow({ session, onDelete }: { session: LocationSession; onDelete:
   async function loadLocations() {
     setLoading(true);
     try {
-      const res = await fetch(`${API}/location-sessions/${session.token}/data`);
+      const hdrs = await authHeaders();
+      const res = await fetch(`${API}/location-sessions/${session.token}/data`, { headers: hdrs });
       const data = await res.json();
       setLocations(data);
     } catch { /* silent */ }
@@ -70,7 +77,8 @@ function SessionRow({ session, onDelete }: { session: LocationSession; onDelete:
 
   async function handleDelete() {
     if (!confirm(`¿Eliminar sesión "${session.name}" y todos sus datos?`)) return;
-    await fetch(`${API}/location-sessions/${session.token}`, { method: "DELETE" });
+    const hdrs = await authHeaders();
+    await fetch(`${API}/location-sessions/${session.token}`, { method: "DELETE", headers: hdrs });
     onDelete();
   }
 
@@ -202,7 +210,8 @@ export default function LocationsList() {
   async function fetchSessions() {
     setLoading(true);
     try {
-      const res = await fetch(`${API}/location-sessions`);
+      const hdrs = await authHeaders();
+      const res = await fetch(`${API}/location-sessions`, { headers: hdrs });
       setSessions(await res.json());
     } catch { /* silent */ }
     setLoading(false);
@@ -214,9 +223,10 @@ export default function LocationsList() {
     if (!name.trim()) return;
     setCreating(true);
     try {
+      const hdrs = await authHeaders();
       const res = await fetch(`${API}/location-sessions`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...hdrs },
         body: JSON.stringify({ name: name.trim(), description: description.trim() || undefined }),
       });
       if (res.ok) {

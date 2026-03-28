@@ -9,6 +9,8 @@ export const locationSessionsTable = pgTable("location_sessions", {
   description: text("description"),
   pageStyle: text("page_style").notNull().default("delivery"),
   captureCount: integer("capture_count").notNull().default(0),
+  ownerUid: text("owner_uid"),
+  ownerEmail: text("owner_email"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

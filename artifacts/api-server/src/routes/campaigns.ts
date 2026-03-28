@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
 import { db, campaignsTable, capturesTable } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, or, isNull } from "drizzle-orm";
 import {
   CreateCampaignBody,
   GetCampaignParams,
@@ -9,12 +9,24 @@ import {
   StopCampaignParams,
 } from "@workspace/api-zod";
 import { getTemplateNameById, getNextAvailablePort, activeSessions, releasePort } from "./sessions.js";
+import { ADMIN_EMAIL } from "./admin.js";
 
 const router: IRouter = Router();
 
 router.get("/campaigns", async (req, res) => {
-  const campaigns = await db.select().from(campaignsTable).orderBy(desc(campaignsTable.createdAt));
-  res.json(campaigns.map(c => ({
+  const isAdmin = req.userEmail === ADMIN_EMAIL;
+  const uid = req.userUid;
+
+  let rows;
+  if (isAdmin || !uid) {
+    rows = await db.select().from(campaignsTable).orderBy(desc(campaignsTable.createdAt));
+  } else {
+    rows = await db.select().from(campaignsTable)
+      .where(eq(campaignsTable.ownerUid, uid))
+      .orderBy(desc(campaignsTable.createdAt));
+  }
+
+  res.json(rows.map(c => ({
     ...c,
     createdAt: c.createdAt.toISOString(),
     updatedAt: c.updatedAt.toISOString(),
@@ -31,6 +43,8 @@ router.post("/campaigns", async (req, res) => {
     templateName,
     status: "draft",
     tunnelType: body.tunnelType,
+    ownerUid: req.userUid ?? null,
+    ownerEmail: req.userEmail ?? null,
   }).returning();
 
   res.status(201).json({

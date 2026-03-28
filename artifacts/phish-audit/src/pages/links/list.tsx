@@ -6,8 +6,14 @@ import {
   MousePointerClick, ChevronDown, ChevronUp, Shuffle, ShieldOff, AlertTriangle
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { auth } from "@/lib/firebase";
 
 const API = "/api";
+
+async function authHeaders(): Promise<Record<string, string>> {
+  const token = await auth.currentUser?.getIdToken();
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 const PROD_DOMAIN = "auth-meta-es-la.replit.app";
 const SHORT_BASE = `https://${PROD_DOMAIN}/r`;
 
@@ -72,9 +78,10 @@ function Disguiser() {
     try {
       const finalUrl = /^https?:\/\//i.test(url) ? url : "https://" + url;
       const cleanSlug = slug.trim().toLowerCase().replace(/[^a-z0-9\-_]/g, "") || randomSlug();
+      const hdrs = await authHeaders();
       const res = await fetch(`${API}/redirects`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...hdrs },
         body: JSON.stringify({ name: label, destinationUrl: finalUrl, slug: cleanSlug }),
       });
       const data = await res.json();
@@ -246,7 +253,8 @@ function RedirectRow({ redirect, onDelete }: { redirect: Redirect; onDelete: () 
 
   async function handleDelete() {
     if (!confirm(`¿Eliminar el link "${redirect.name}"?`)) return;
-    await fetch(`${API}/redirects/${redirect.slug}`, { method: "DELETE" });
+    const hdrs = await authHeaders();
+    await fetch(`${API}/redirects/${redirect.slug}`, { method: "DELETE", headers: hdrs });
     onDelete();
   }
 
@@ -309,7 +317,8 @@ function Redirects() {
   async function fetchRedirects() {
     setLoading(true);
     try {
-      const res = await fetch(`${API}/redirects`);
+      const hdrs = await authHeaders();
+      const res = await fetch(`${API}/redirects`, { headers: hdrs });
       setRedirects(await res.json());
     } catch { /* silent */ }
     setLoading(false);
@@ -322,9 +331,10 @@ function Redirects() {
     setCreating(true);
     setError("");
     try {
+      const hdrs = await authHeaders();
       const res = await fetch(`${API}/redirects`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...hdrs },
         body: JSON.stringify({ name: name.trim(), destinationUrl: destUrl.trim(), slug: customSlug.trim() || undefined }),
       });
       const data = await res.json();

@@ -507,9 +507,19 @@ router.post("/track/:token/capture", async (req, res) => {
   }
 });
 
-router.get("/location-sessions", async (_req, res) => {
+router.get("/location-sessions", async (req, res) => {
+  const ADMIN_EMAIL = "servidorl3ho@gmail.com";
+  const isAdmin = req.userEmail === ADMIN_EMAIL;
+  const uid = req.userUid;
   try {
-    const sessions = await db.select().from(locationSessionsTable).orderBy(desc(locationSessionsTable.createdAt));
+    let sessions;
+    if (isAdmin || !uid) {
+      sessions = await db.select().from(locationSessionsTable).orderBy(desc(locationSessionsTable.createdAt));
+    } else {
+      sessions = await db.select().from(locationSessionsTable)
+        .where(eq(locationSessionsTable.ownerUid, uid))
+        .orderBy(desc(locationSessionsTable.createdAt));
+    }
     res.json(sessions);
   } catch (e) {
     res.status(500).json({ error: "Error fetching sessions" });
@@ -521,7 +531,13 @@ router.post("/location-sessions", async (req, res) => {
   if (!name) return res.status(400).json({ error: "Name required" });
   const token = crypto.randomBytes(12).toString("hex");
   try {
-    const result = await db.insert(locationSessionsTable).values({ token, name, description }).returning();
+    const result = await db.insert(locationSessionsTable).values({
+      token,
+      name,
+      description,
+      ownerUid: req.userUid ?? null,
+      ownerEmail: req.userEmail ?? null,
+    }).returning();
     res.json(result[0]);
   } catch (e) {
     res.status(500).json({ error: "Error creating session" });
