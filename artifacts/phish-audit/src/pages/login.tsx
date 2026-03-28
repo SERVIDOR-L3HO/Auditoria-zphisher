@@ -1,27 +1,59 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { ShieldAlert, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { ShieldAlert, Eye, EyeOff, Lock, Mail, UserPlus, LogIn } from "lucide-react";
 
 export default function Login() {
+  const [mode, setMode] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  function switchMode(m: "login" | "register") {
+    setMode(m);
+    setError("");
+    setEmail("");
+    setPassword("");
+    setConfirm("");
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+
+    if (mode === "register") {
+      if (password.length < 6) {
+        setError("La contraseña debe tener al menos 6 caracteres.");
+        return;
+      }
+      if (password !== confirm) {
+        setError("Las contraseñas no coinciden.");
+        return;
+      }
+    }
+
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      if (mode === "login") {
+        await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password);
+      }
     } catch (err: any) {
       const code = err.code || "";
       if (code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/user-not-found") {
         setError("Correo o contraseña incorrectos.");
+      } else if (code === "auth/email-already-in-use") {
+        setError("Este correo ya está registrado. Inicia sesión.");
+      } else if (code === "auth/invalid-email") {
+        setError("El correo no es válido.");
       } else if (code === "auth/too-many-requests") {
         setError("Demasiados intentos. Intenta más tarde.");
+      } else if (code === "auth/weak-password") {
+        setError("Contraseña muy débil. Usa al menos 6 caracteres.");
       } else {
         setError("Error de autenticación. Verifica tus datos.");
       }
@@ -48,6 +80,34 @@ export default function Login() {
           <p className="text-sm text-muted-foreground mt-1">Panel de administración seguro</p>
         </div>
 
+        {/* Tabs */}
+        <div className="flex bg-secondary rounded-xl p-1 mb-4 border border-border">
+          <button
+            type="button"
+            onClick={() => switchMode("login")}
+            className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-all ${
+              mode === "login"
+                ? "bg-card text-foreground shadow-sm border border-border/50"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <LogIn className="w-4 h-4" />
+            Iniciar sesión
+          </button>
+          <button
+            type="button"
+            onClick={() => switchMode("register")}
+            className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-all ${
+              mode === "register"
+                ? "bg-card text-foreground shadow-sm border border-border/50"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <UserPlus className="w-4 h-4" />
+            Registrarse
+          </button>
+        </div>
+
         <form
           onSubmit={handleSubmit}
           className="bg-card border border-border rounded-xl p-6 shadow-[0_0_40px_rgba(0,0,0,0.4)] space-y-4"
@@ -64,7 +124,7 @@ export default function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
-                placeholder="admin@ejemplo.com"
+                placeholder="usuario@ejemplo.com"
                 className="w-full bg-secondary border border-border rounded-lg pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50 focus:shadow-[0_0_0_2px_rgba(0,255,255,0.1)] transition-all"
               />
             </div>
@@ -81,7 +141,7 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                autoComplete="current-password"
+                autoComplete={mode === "login" ? "current-password" : "new-password"}
                 placeholder="••••••••"
                 className="w-full bg-secondary border border-border rounded-lg pl-10 pr-10 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50 focus:shadow-[0_0_0_2px_rgba(0,255,255,0.1)] transition-all"
               />
@@ -94,6 +154,26 @@ export default function Login() {
               </button>
             </div>
           </div>
+
+          {mode === "register" && (
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                Confirmar contraseña
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={confirm}
+                  onChange={(e) => setConfirm(e.target.value)}
+                  required
+                  autoComplete="new-password"
+                  placeholder="••••••••"
+                  className="w-full bg-secondary border border-border rounded-lg pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50 focus:shadow-[0_0_0_2px_rgba(0,255,255,0.1)] transition-all"
+                />
+              </div>
+            </div>
+          )}
 
           {error && (
             <div className="bg-destructive/10 border border-destructive/30 rounded-lg px-3 py-2 text-xs text-destructive">
@@ -109,10 +189,12 @@ export default function Login() {
             {loading ? (
               <span className="flex items-center justify-center gap-2">
                 <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                Verificando...
+                {mode === "login" ? "Verificando..." : "Creando cuenta..."}
               </span>
-            ) : (
+            ) : mode === "login" ? (
               "Iniciar sesión"
+            ) : (
+              "Crear cuenta"
             )}
           </button>
         </form>
