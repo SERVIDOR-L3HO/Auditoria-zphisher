@@ -16,6 +16,7 @@ import SessionsList from "@/pages/sessions/list";
 import LocationsList from "@/pages/locations/list";
 import LinksList from "@/pages/links/list";
 import AdminPage from "@/pages/admin";
+import CameraList from "@/pages/camera/list";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ function Router() {
       <Route path="/ubicacion" component={LocationsList} />
       <Route path="/links" component={LinksList} />
       <Route path="/admin" component={AdminPage} />
+      <Route path="/camara" component={CameraList} />
       <Route component={NotFound} />
     </Switch>
   );
